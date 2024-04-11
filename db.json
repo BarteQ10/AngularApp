@@ -1,0 +1,29 @@
+{
+  "users": [
+    {
+      "id": "cc66",
+      "fullName": "test",
+      "email": "test@test.com",
+      "password": "1234"
+    },
+    {
+      "id": "ce66",
+      "fullName": "test",
+      "email": "test@test.com",
+      "password": "1234"
+    },
+    {
+      "id": "811e",
+      "fullName": "t",
+      "email": "test@a",
+      "password": "T"
+    },
+    {
+      "id": "822d",
+      "fullName": "test",
+      "email": "recepta.med@hospital.pl",
+      "password": "r"
+    }
+  ],
+  "chambers":[]
+}
