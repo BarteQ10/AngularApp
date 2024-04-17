@@ -1,10 +1,9 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
-import { LayoutComponent } from './components/layout/layout.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
 import { authGuard } from './guards/auth.guard';
+import { AboutComponent }from './components/about/about.component';
 
 export const routes: Routes = [
     {
@@ -16,15 +15,15 @@ export const routes: Routes = [
     },
     {
         path: 'contact', 
-        component:LayoutComponent
+        component: AboutComponent
     },
     {
         path: 'services', 
-        component:DashboardComponent
+        component: AboutComponent
     },
     {
         path: 'about', 
-        component:LayoutComponent
+        component: AboutComponent
     },
     {
         path: 'register', 

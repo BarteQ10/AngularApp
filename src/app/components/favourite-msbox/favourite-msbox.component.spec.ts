@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DashboardComponent } from './dashboard.component';
+import { FavouriteMSBOXComponent } from './favourite-msbox.component';
 
-describe('DashboardComponent', () => {
-  let component: DashboardComponent;
-  let fixture: ComponentFixture<DashboardComponent>;
+describe('FavouriteMSBOXComponent', () => {
+  let component: FavouriteMSBOXComponent;
+  let fixture: ComponentFixture<FavouriteMSBOXComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DashboardComponent]
+      imports: [FavouriteMSBOXComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(DashboardComponent);
+    fixture = TestBed.createComponent(FavouriteMSBOXComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
