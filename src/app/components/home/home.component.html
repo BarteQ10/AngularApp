@@ -1,2 +1,10 @@
-<p>home works!</p>
-<p-button label="Logout" (onClick)="logOut()"></p-button>
+<div fxLayout="row wrap" fxLayoutAlign="center center" style="align-items: center;">
+  <div *ngFor="let item of cardItems" class="p-card" (click)="navigateTo(item.route)">
+    <div class="card-header">
+      <span class="{{ item.icon }}"></span> {{ item.title }}
+    </div>
+    <div class="card-body">
+      <p>{{ item.description }}</p>
+    </div>
+  </div>
+</div>

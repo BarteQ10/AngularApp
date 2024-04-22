@@ -4,6 +4,12 @@ import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
 import { authGuard } from './guards/auth.guard';
 import { AboutComponent }from './components/about/about.component';
+import { SuspendAccountComponent } from './components/suspend-account/suspend-account.component';
+import { OrdersComponent } from './components/orders/orders.component';
+import { FavouriteMSBOXComponent } from './components/favourite-msbox/favourite-msbox.component';
+import { ChangeUserDataComponent } from './components/change-user-data/change-user-data.component';
+import { SendParcelComponent } from './components/send-parcel/send-parcel.component';
+import { ParcelReturnsComponent } from './components/parcel-returns/parcel-returns.component';
 
 export const routes: Routes = [
     {
@@ -27,7 +33,31 @@ export const routes: Routes = [
     },
     {
         path: 'register', 
-        component:RegisterComponent
+        component: RegisterComponent
+    },
+    {
+        path: 'suspendAccount',
+        component: SuspendAccountComponent
+    },
+    {
+        path: 'orders',
+        component: OrdersComponent
+    },
+    {
+        path: 'favouriteMSBox',
+        component: FavouriteMSBOXComponent
+    },
+    {
+        path: 'changeUserData',
+        component: ChangeUserDataComponent
+    },
+    {
+        path: 'sendParcel',
+        component: SendParcelComponent
+    },
+    {
+        path: 'yourReturns',
+        component: ParcelReturnsComponent
     },
     {
         path: '',
