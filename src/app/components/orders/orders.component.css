@@ -1,0 +1,6 @@
+.p-element {
+    padding: 20px;
+    height: calc(100vh - 40px); /* Odjęcie 40px - 20px odstępu górnego i 20px odstępu dolnego */
+    box-sizing: border-box;
+    width: 80%;
+}

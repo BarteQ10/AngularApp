@@ -1,1 +1,22 @@
-<p>suspend-account works!</p>
+<div class="p-card p-card-centered">
+    <div class="p-card-header">
+      <h4>Account suspension</h4>
+    </div>
+    <div class="p-card-body">
+      <p>Are you sure you want to suspend this account?</p>   
+    </div>
+    <div class="p-card-footer">
+        <button pButton pRipple label="Yes" class="p-button-success" (click)="openSuspendModal()"></button>
+    </div>
+  </div>
+  
+  <p-dialog [(visible)]="showSuspendModal" [draggable]="false">
+    <div class="p-dialog-header">
+      <h4>Confirm suspension</h4>
+    </div>
+    <div class="p-dialog-content">
+      <p>Are you sure you want to suspend this account?</p>
+      <button pButton pRipple label="Yes" class="p-button-success" (click)="suspendAccount()" style="margin-right: 30px;"></button>
+      <button pButton pRipple label="No" class="p-button-danger" (click)="showSuspendModal = false"></button>
+    </div>
+  </p-dialog>

@@ -23,7 +23,13 @@
       "fullName": "test",
       "email": "recepta.med@hospital.pl",
       "password": "r"
+    },
+    {
+      "id": "376e",
+      "fullName": "wwww",
+      "email": "w@w",
+      "password": "w1"
     }
   ],
-  "chambers":[]
+  "chambers": []
 }
