@@ -7,6 +7,7 @@ import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { MessageService } from 'primeng/api';
+import { Login } from '../../interfaces/auth';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -28,20 +29,32 @@ export class LoginComponent {
     return this.loginForm.controls['password'];
   }
 
-  loginUser(){
-    const {email,password} = this.loginForm.value;
-    this.authService.getUserByEmail(email as string).subscribe(
-      response =>{
-        if(response.length > 0 && response[0].password === password){
-          sessionStorage.setItem('email', email as string);
-          this.router.navigate(['/']);
-        }else{
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Email or password is wrong' });
+  loginUser() {
+    const emailControl = this.loginForm.get('email');
+    const passwordControl = this.loginForm.get('password');
+  
+    if (emailControl && passwordControl && emailControl.value && passwordControl.value) {
+      const email = emailControl.value;
+      const password = passwordControl.value;
+      const loginData: Login = { Mail: email, Password: password };
+  
+      this.authService.login(loginData).subscribe(
+        (response: any) => {
+          if (response.jwt_token) {
+            sessionStorage.setItem('jwt_token', response.jwt_token);
+            sessionStorage.setItem('email', email);
+            
+            this.router.navigate(['/']); // Przekierowanie po pomyślnym zalogowaniu
+          } else {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid email or password' });
+          }
+        },
+        error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
         }
-      },
-      error =>{
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
-      }
-    )
+      );
+    } else {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Email or password is empty' });
+    }
   }
 }

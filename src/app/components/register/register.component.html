@@ -1,41 +1,87 @@
 <form [formGroup]="registerForm" (ngSubmit)="submitDetails()">
     <p-card header="Register" [style]="{width:'360px'}">
         <div class="field">
-            <label for="fullName">Full Name</label>
-            <input type="text" pInputText formControlName="fullName" class="w-full" name="fullName"
-                placeholder="Type your full name" />
-                <small *ngIf="fullName.invalid && (fullName.dirty || fullName.touched)" class="block p-error">
-                    <div *ngIf="fullName.errors?.['required']">Name is required</div>
-                    <div *ngIf="fullName.errors?.['pattern']">Enter a valid Name</div>
-                </small>
-        </div>
-        <div class="field">
-            <label for="email">Email</label>
-            <input type="text" pInputText formControlName="email" class="w-full" name="email"
+            <label for="Mail">Email</label>
+            <input type="text" pInputText formControlName="Mail" class="w-full" name="Mail"
                 placeholder="Type your email" />
-                <small *ngIf="email.invalid && (email.dirty || email.touched)" class="block p-error">
-                    <div *ngIf="email.errors?.['required']">Email is required</div>
-                    <div *ngIf="email.errors?.['email']">Email should be valid</div>
-                </small>
+            <small *ngIf="registerForm.controls.Mail.invalid && (registerForm.controls.Mail.dirty || registerForm.controls.Mail.touched)" class="block p-error">
+                <div *ngIf="registerForm.controls.Mail.errors?.['required']">Email is required</div>
+                <div *ngIf="registerForm.controls.Mail.errors?.['email']">Email should be valid</div>
+            </small>
         </div>
         <div class="field">
-            <label for="password">Password</label>
-            <input type="password" pInputText formControlName="password" class="w-full" name="password"
+            <label for="Password">Password</label>
+            <input type="password" pInputText formControlName="Password" class="w-full" name="Password"
                 placeholder="Type your password" />
-                <small *ngIf="password.invalid && (password.dirty || password.touched)" class="block p-error">
-                    <div *ngIf="password.errors?.['required']">Password is required</div>
-                </small>
+            <small *ngIf="registerForm.controls.Password.invalid && (registerForm.controls.Password.dirty || registerForm.controls.Password.touched)" class="block p-error">
+                <div *ngIf="registerForm.controls.Password.errors?.['required']">Password is required</div>
+            </small>
         </div>
         <div class="field">
-            <label for="confirmPassword">Confirm Password</label>
-            <input type="password" pInputText formControlName="confirmPassword" class="w-full" name="confirmPassword"
-                placeholder="Confirm password" />
-                <small *ngIf="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)" class="block p-error">
-                    <div *ngIf="confirmPassword.errors?.['required']">Confirm the password</div>
-                </small>
-                <small *ngIf="registerForm.errors?.['passwordMismatch'] && confirmPassword.valid && password.valid" class="block p-error">
-                    <div >Password should match</div>
-                </small>
+            <label for="FirstName">First Name</label>
+            <input type="text" pInputText formControlName="FirstName" class="w-full" name="FirstName"
+                placeholder="Type your first name" />
+            <small *ngIf="registerForm.controls.FirstName.invalid && (registerForm.controls.FirstName.dirty || registerForm.controls.FirstName.touched)" class="block p-error">
+                <div *ngIf="registerForm.controls.FirstName.errors?.['required']">First name is required</div>
+            </small>
+        </div>
+        <div class="field">
+            <label for="LastName">Last Name</label>
+            <input type="text" pInputText formControlName="LastName" class="w-full" name="LastName"
+                placeholder="Type your last name" />
+            <small *ngIf="registerForm.controls.LastName.invalid && (registerForm.controls.LastName.dirty || registerForm.controls.LastName.touched)" class="block p-error">
+                <div *ngIf="registerForm.controls.LastName.errors?.['required']">Last name is required</div>
+            </small>
+        </div>
+        <div class="field">
+            <label for="BirthDate">Birth Date</label>
+            <input type="date" pInputText formControlName="BirthDate" class="w-full" name="BirthDate" />
+            <small *ngIf="registerForm.controls.BirthDate.invalid && (registerForm.controls.BirthDate.dirty || registerForm.controls.BirthDate.touched)" class="block p-error">
+                <div *ngIf="registerForm.controls.BirthDate.errors?.['required']">Birth date is required</div>
+            </small>
+        </div>
+        <div class="field">
+            <label for="Sex">Sex</label>
+            <select pInputText formControlName="Sex" class="w-full" name="Sex">
+                <option [ngValue]="null">Select Sex</option>
+                <option [ngValue]="true">Male</option>
+                <option [ngValue]="false">Female</option>
+            </select>
+            <small *ngIf="registerForm.controls.Sex.invalid && (registerForm.controls.Sex.dirty || registerForm.controls.Sex.touched)" class="block p-error">
+                <div *ngIf="registerForm.controls.Sex.errors?.['required']">Sex is required</div>
+            </small>
+        </div>
+        <div class="field">
+            <label for="DefaultAddress">Default Address</label>
+            <input type="text" pInputText formControlName="DefaultAddress" class="w-full" name="DefaultAddress"
+                placeholder="Type your default address" />
+            <small *ngIf="registerForm.controls.DefaultAddress.invalid && (registerForm.controls.DefaultAddress.dirty || registerForm.controls.DefaultAddress.touched)" class="block p-error">
+                <div *ngIf="registerForm.controls.DefaultAddress.errors?.['required']">Default address is required</div>
+            </small>
+        </div>
+        <div class="field">
+            <label for="DefaultPostalcode">Default Postal Code</label>
+            <input type="text" pInputText formControlName="DefaultPostalcode" class="w-full" name="DefaultPostalcode"
+                placeholder="Type your default postal code" />
+            <small *ngIf="registerForm.controls.DefaultPostalcode.invalid && (registerForm.controls.DefaultPostalcode.dirty || registerForm.controls.DefaultPostalcode.touched)" class="block p-error">
+                <div *ngIf="registerForm.controls.DefaultPostalcode.errors?.['required']">Default postal code is required</div>
+            </small>
+        </div>
+        <div class="field">
+            <label for="DefaultLocation">Default Location</label>
+            <input type="text" pInputText formControlName="DefaultLocation" class="w-full" name="DefaultLocation"
+                placeholder="Type your default location" />
+            <small *ngIf="registerForm.controls.DefaultLocation.invalid && (registerForm.controls.DefaultLocation.dirty || registerForm.controls.DefaultLocation.touched)" class="block p-error">
+                <div *ngIf="registerForm.controls.DefaultLocation.errors?.['required']">Default location is required</div>
+            </small>
+        </div>
+        <div class="field">
+            <label for="Phone">Phone</label>
+            <input type="text" pInputText formControlName="Phone" class="w-full" name="Phone"
+                placeholder="Type your phone number" />
+            <small *ngIf="registerForm.controls.Phone.invalid && (registerForm.controls.Phone.dirty || registerForm.controls.Phone.touched)" class="block p-error">
+                <div *ngIf="registerForm.controls.Phone.errors?.['required']">Phone number is required</div>
+            </small>
         </div>
         <p-button label="Register" styleClass="w-full" [disabled]="registerForm.invalid" type="submit"></p-button>
         <div class="mt-2">

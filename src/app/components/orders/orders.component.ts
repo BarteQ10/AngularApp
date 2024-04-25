@@ -15,14 +15,14 @@ import { ButtonModule } from 'primeng/button';
 })
 export class OrdersComponent implements OnInit {
 
-  orders: Order[] = []; // Załóżmy, że masz tablicę zamówień
+  orders: Order[] = []; 
 
-  constructor(private orderService: OrderService) { } // Wstrzykuj OrderService
+  constructor(private orderService: OrderService) { } 
 
   ngOnInit(): void {
     this.orderService.getOrders().subscribe(
       (orders: Order[]) => {
-        this.orders = orders; // Przypisz pobrane zamówienia do właściwości orders
+        this.orders = orders; 
       },
       (error) => {
         console.error('Błąd podczas pobierania zamówień:', error);
