@@ -1,1 +1,86 @@
-<p>change-user-data works!</p>
+<form [formGroup]="userDataForm" (ngSubmit)="submitDetails()">
+    <p-card header="Edit User Details" [style]="{width:'360px'}">
+        <div class="field">
+            <label for="Mail">Email</label>
+            <input type="text" pInputText class="w-full" name="Mail" formControlName="Mail" readonly />
+        </div>
+        <div class="field">
+            <label for="Password">Password</label>
+            <input type="password" pInputText formControlName="Password" class="w-full" name="Password"
+                placeholder="Type your password" />
+            <small *ngIf="userDataForm.controls['Password'].invalid && (userDataForm.controls['Password'].dirty || userDataForm.controls['Password'].touched)" class="block p-error">
+                <div *ngIf="userDataForm.controls['Password'].errors?.['required']">Password is required</div>
+            </small>
+        </div>
+        <div class="field">
+            <label for="FirstName">First Name</label>
+            <input type="text" pInputText formControlName="FirstName" class="w-full" name="FirstName"
+                placeholder="Type your first name" />
+            <small *ngIf="userDataForm.controls['FirstName'].invalid && (userDataForm.controls['FirstName'].dirty || userDataForm.controls['FirstName'].touched)" class="block p-error">
+                <div *ngIf="userDataForm.controls['FirstName'].errors?.['required']">First name is required</div>
+            </small>
+        </div>
+        <div class="field">
+            <label for="LastName">Last Name</label>
+            <input type="text" pInputText formControlName="LastName" class="w-full" name="LastName"
+                placeholder="Type your last name" />
+            <small *ngIf="userDataForm.controls['LastName'].invalid && (userDataForm.controls['LastName'].dirty || userDataForm.controls['LastName'].touched)" class="block p-error">
+                <div *ngIf="userDataForm.controls['LastName'].errors?.['required']">Last name is required</div>
+            </small>
+        </div>
+        <div class="field">
+            <label for="BirthDate">Birth Date</label>
+            <input type="date" pInputText formControlName="BirthDate" class="w-full" name="BirthDate" />
+            <small *ngIf="userDataForm.controls['BirthDate'].invalid && (userDataForm.controls['BirthDate'].dirty || userDataForm.controls['BirthDate'].touched)" class="block p-error">
+                <div *ngIf="userDataForm.controls['BirthDate'].errors?.['required']">Birth date is required</div>
+            </small>
+        </div>
+        <div class="field">
+            <label for="Sex">Sex</label>
+            <select pInputText formControlName="Sex" class="w-full" name="Sex">
+                <option [ngValue]="null">Select Sex</option>
+                <option [ngValue]="true">Male</option>
+                <option [ngValue]="false">Female</option>
+            </select>
+            <small *ngIf="userDataForm.controls['Sex'].invalid && (userDataForm.controls['Sex'].dirty || userDataForm.controls['Sex'].touched)" class="block p-error">
+                <div *ngIf="userDataForm.controls['Sex'].errors?.['required']">Sex is required</div>
+            </small>
+        </div>
+        <div class="field">
+            <label for="DefaultAddress">Default Address</label>
+            <input type="text" pInputText formControlName="DefaultAddress" class="w-full" name="DefaultAddress"
+                placeholder="Type your default address" />
+            <small *ngIf="userDataForm.controls['DefaultAddress'].invalid && (userDataForm.controls['DefaultAddress'].dirty || userDataForm.controls['DefaultAddress'].touched)" class="block p-error">
+                <div *ngIf="userDataForm.controls['DefaultAddress'].errors?.['required']">Default address is required</div>
+            </small>
+        </div>
+        <div class="field">
+            <label for="DefaultPostalcode">Default Postal Code</label>
+            <input type="text" pInputText formControlName="DefaultPostalcode" class="w-full" name="DefaultPostalcode"
+                placeholder="Type your default postal code" />
+            <small *ngIf="userDataForm.controls['DefaultPostalcode'].invalid && (userDataForm.controls['DefaultPostalcode'].dirty || userDataForm.controls['DefaultPostalcode'].touched)" class="block p-error">
+                <div *ngIf="userDataForm.controls['DefaultPostalcode'].errors?.['required']">Default postal code is required</div>
+            </small>
+        </div>
+        <div class="field">
+            <label for="DefaultLocation">Default Location</label>
+            <input type="text" pInputText formControlName="DefaultLocation" class="w-full" name="DefaultLocation"
+                placeholder="Type your default location" />
+            <small *ngIf="userDataForm.controls['DefaultLocation'].invalid && (userDataForm.controls['DefaultLocation'].dirty || userDataForm.controls['DefaultLocation'].touched)" class="block p-error">
+                <div *ngIf="userDataForm.controls['DefaultLocation'].errors?.['required']">Default location is required</div>
+            </small>
+        </div>
+        <div class="field">
+            <label for="Phone">Phone</label>
+            <input type="text" pInputText formControlName="Phone" class="w-full" name="Phone"
+                placeholder="Type your phone number" />
+            <small *ngIf="userDataForm.controls['Phone'].invalid && (userDataForm.controls['Phone'].dirty || userDataForm.controls['Phone'].touched)" class="block p-error">
+                <div *ngIf="userDataForm.controls['Phone'].errors?.['required']">Phone number is required</div>
+            </small>
+        </div>
+        
+        <p-button label="Edit" styleClass="w-full" [disabled]="userDataForm.invalid" type="submit"></p-button>
+
+    </p-card>
+    
+</form>
