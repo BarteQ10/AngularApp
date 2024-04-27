@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Order } from '../interfaces/order';
+import { AuthService } from './auth.service';
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
 
-  private apiUrl = 'http://example.com/api/orders'; // Adres API do zamówień
+  private baseUrl = 'http://127.0.0.1:8000'
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   // Metoda do pobierania wszystkich zamówień
   getOrders(): Observable<Order[]> {
@@ -25,21 +26,28 @@ export class OrderService {
 
   // Metoda do pobierania jednego zamówienia po ID
   getOrderById(id: number): Observable<Order> {
-    return this.http.get<Order>(`${this.apiUrl}/${id}`);
+    return this.http.get<Order>(`${this.baseUrl}/${id}`);
   }
 
-  // Metoda do dodawania nowego zamówienia
-  addOrder(order: Order): Observable<Order> {
-    return this.http.post<Order>(this.apiUrl, order);
+  createOrder(orderData: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.getAuthToken()}` // Dodaj token autoryzacyjny
+    });
+    return this.http.post<any>(`${this.baseUrl}/create-order/`, orderData, { headers });
   }
 
   // Metoda do aktualizowania istniejącego zamówienia
   updateOrder(order: Order): Observable<Order> {
-    return this.http.put<Order>(`${this.apiUrl}/${order.id}`, order);
+    
+    return this.http.put<Order>(`${this.baseUrl}/${order.id}`, order);
   }
 
   // Metoda do usuwania zamówienia
   deleteOrder(id: number): Observable<Order> {
-    return this.http.delete<Order>(`${this.apiUrl}/${id}`);
+    return this.http.delete<Order>(`${this.baseUrl}/${id}`);
+  }
+  private getAuthToken(): string {
+    return sessionStorage.getItem('jwt_token') || ''; // Sprawdź, czy token istnieje w sesji
   }
 }

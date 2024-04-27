@@ -1,1 +1,38 @@
-<p>send-parcel works!</p>
+<form [formGroup]="packageForm" (ngSubmit)="submitForm()">
+    <p-card header="Parcel Information" [style]="{width:'360px'}">
+      <div class="field">
+        <label for="ReceiverId">ReceiverId</label>
+        <div class="p-inputgroup w-full">
+          <p-inputNumber id="ReceiverId" class="w-full" formControlName="ReceiverId"></p-inputNumber>
+        </div>
+      </div>
+      <div class="field">
+        <label for="PaymentMethodId">PaymentMethodId</label>
+        <div class="p-inputgroup w-full">
+          <p-inputNumber id="PaymentMethodId" class="w-full" formControlName="PaymentMethodId"></p-inputNumber>
+        </div>
+      </div>
+      <div class="field">
+        <label for="Description">Description</label>
+        <input pInputText id="Description" class="w-full" formControlName="Description"/>
+      </div>
+      <div class="field">
+        <label for="MachineIdFrom">MachineIdFrom</label>
+        <div class="p-inputgroup w-full">
+          <p-inputNumber id="MachineIdFrom" class="w-full" formControlName="MachineIdFrom"></p-inputNumber>
+        </div>
+      </div>
+      <div class="field">
+        <label for="MachineIdTo">MachineIdTo</label>
+        <div class="p-inputgroup w-full">
+          <p-inputNumber id="MachineIdTo" class="w-full" formControlName="MachineIdTo"></p-inputNumber>
+        </div>
+      </div>
+      <div class="field">
+        <label for="Size">Size</label>
+        <input pInputText id="Size" class="w-full" formControlName="Size" />
+      </div>
+      <p-button label="Submit" styleClass="w-full" type="submit"></p-button>
+    </p-card>
+  </form>
+  
