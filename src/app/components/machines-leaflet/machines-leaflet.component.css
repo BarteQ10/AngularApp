@@ -1,0 +1,7 @@
+.info-window-content {
+    color: black !important; /* Zmienia kolor czcionki na czarny */
+  }
+
+.p-dialog .p-dialog-content{
+    color: black !important;
+}

@@ -7,18 +7,22 @@ import { InputTextModule } from 'primeng/inputtext';
 import { OrderService } from '../../services/order.service';
 import { MessageService } from 'primeng/api';
 import { AuthService } from '../../services/auth.service';
+import { MachinesLeafletComponent } from '../machines-leaflet/machines-leaflet.component';
+import { DialogModule } from 'primeng/dialog';
+import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-send-parcel',
   standalone: true,
-  imports: [ReactiveFormsModule, CardModule, ButtonModule, InputTextModule, InputNumberModule],
+  imports: [ReactiveFormsModule, CardModule, ButtonModule, InputTextModule, InputNumberModule, DialogModule],
+  providers: [DialogService],
   templateUrl: './send-parcel.component.html',
   styleUrl: './send-parcel.component.css'
 })
 export class SendParcelComponent implements OnInit {
   packageForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private orderService: OrderService, private messageService: MessageService, private authService: AuthService) { }
+  constructor(private dialogService: DialogService, private fb: FormBuilder, private orderService: OrderService, private messageService: MessageService, private authService: AuthService) { }
 
   ngOnInit(): void {
     
@@ -32,7 +36,12 @@ export class SendParcelComponent implements OnInit {
       Size: ['', Validators.required]
     });
   }
-
+  showParcelModal() {
+    const ref = this.dialogService.open(MachinesLeafletComponent, {
+      header: 'Parcel Modal',
+      width: '70%'
+    });
+  }
   submitForm() {
     if (this.packageForm.valid) {
       this.orderService.createOrder(this.packageForm.value)
