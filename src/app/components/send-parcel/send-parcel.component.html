@@ -1,5 +1,32 @@
+<div class="container" *ngIf="!selectedSize" style="margin-top: 20px;">
+  <div class="card-container">
+    <p-card header="Small" [style]="{width:'360px'}" (click)="selectSize('S')">
+      <div class="placeholder">
+        <!-- Tutaj dodaj placeholder na zdjęcie -->
+      </div>
+      <p>Size: S</p>
+      <p>Price: $X.XX</p>
+    </p-card>
+    <p-card header="Medium" [style]="{width:'360px'}" (click)="selectSize('M')">
+      <div class="placeholder">
+        <!-- Tutaj dodaj placeholder na zdjęcie -->
+      </div>
+      <p>Size: M</p>
+      <p>Price: $X.XX</p>
+    </p-card>
+    <p-card header="Large" [style]="{width:'360px'}" (click)="selectSize('L')">
+      <div class="placeholder">
+        <!-- Tutaj dodaj placeholder na zdjęcie -->
+      </div>
+      <p>Size: L</p>
+      <p>Price: $X.XX</p>
+    </p-card>
+  </div>
+</div>
+
+<div *ngIf="selectedSize" style="margin-top: 20px;">
 <form [formGroup]="packageForm" (ngSubmit)="submitForm()">
-    <p-card header="Parcel Information" [style]="{width:'360px'}">
+    <p-card header="Parcel Information" [style]="{width:'500px'}">
       <div class="field">
         <label for="ReceiverId">ReceiverId</label>
         <div class="p-inputgroup w-full">
@@ -7,9 +34,15 @@
         </div>
       </div>
       <div class="field">
-        <label for="PaymentMethodId">PaymentMethodId</label>
+        <label for="PaymentMethodId">Payment Method</label>
         <div class="p-inputgroup w-full">
-          <p-inputNumber id="PaymentMethodId" class="w-full" formControlName="PaymentMethodId"></p-inputNumber>
+          <ng-container *ngFor="let paymentMethod of paymentMethods; let i = index">
+            <button pButton type="button" [ngClass]="{'payment-button': true, 'first-button': i === 0, 'last-button': i === paymentMethods.length - 1, 'active': selectedPaymentMethodId === paymentMethod.Id}" (click)="selectPaymentMethod(paymentMethod.Id)">
+              <i class="pi {{ getPaymentIcon(paymentMethod.Id) }}"></i>
+              {{ paymentMethod.PaymentName }}
+            </button>
+            <span *ngIf="i !== paymentMethods.length - 1" class="spacer"></span>
+          </ng-container>
         </div>
       </div>
       <div class="field">
@@ -28,12 +61,12 @@
           <p-inputNumber id="MachineIdTo" class="w-full" formControlName="MachineIdTo"></p-inputNumber>
         </div>
       </div>
-      <button pButton type="button" icon="pi pi-plus" (click)="showParcelModal()"></button>
-      <div class="field">
-        <label for="Size">Size</label>
-        <input pInputText id="Size" class="w-full" formControlName="Size" />
+      <div *ngIf="selectedSize">
+        <button pButton type="button" label="Open Modal" icon="pi pi-plus" (click)="showParcelModal()"></button>
       </div>
-      <p-button label="Submit" styleClass="w-full" type="submit"></p-button>
+      <div style="margin-top: 20px;">
+        <p-button label="Submit" styleClass="w-full" type="submit" severity="success"></p-button>
+      </div>
     </p-card>
   </form>
-  
+  </div>
