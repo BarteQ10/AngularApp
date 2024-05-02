@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MachinesLeafletComponent } from './machines-leaflet.component';
+import { MachinesMapComponent } from './machines-map.component';
 
 describe('MachinesLeafletComponent', () => {
-  let component: MachinesLeafletComponent;
-  let fixture: ComponentFixture<MachinesLeafletComponent>;
+  let component: MachinesMapComponent;
+  let fixture: ComponentFixture<MachinesMapComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MachinesLeafletComponent]
+      imports: [MachinesMapComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(MachinesLeafletComponent);
+    fixture = TestBed.createComponent(MachinesMapComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
