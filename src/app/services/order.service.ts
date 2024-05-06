@@ -14,14 +14,17 @@ export class OrderService {
 
   // Metoda do pobierania wszystkich zamówień
   getOrders(): Observable<Order[]> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.getAuthToken()}` // Dodaj token autoryzacyjny
+    });
     //return this.http.get<Order[]>(this.apiUrl);
-    const orders: Order[] = [
-      { id: 1, customer: 'John Doe', orderDate: new Date(), status: 'Pending' },
-      { id: 2, customer: 'Jane Smith', orderDate: new Date(), status: 'Processing' },
-      { id: 3, customer: 'Alice Johnson', orderDate: new Date(), status: 'Completed' }
-    ];
-    // Zwróć przykładowe dane jako obserwowalną tablicę zamówień
-    return of(orders);
+    // const orders: Order[] = [
+    //   { id: 1, customer: 'John Doe', orderDate: new Date(), status: 'Pending' },
+    //   { id: 2, customer: 'Jane Smith', orderDate: new Date(), status: 'Processing' },
+    //   { id: 3, customer: 'Alice Johnson', orderDate: new Date(), status: 'Completed' }
+    // ];
+    return this.http.get<Order[]>(`${this.baseUrl}/get-all-orders/`,{ headers });
   }
 
   // Metoda do pobierania jednego zamówienia po ID
@@ -40,7 +43,7 @@ export class OrderService {
   // Metoda do aktualizowania istniejącego zamówienia
   updateOrder(order: Order): Observable<Order> {
     
-    return this.http.put<Order>(`${this.baseUrl}/${order.id}`, order);
+    return this.http.put<Order>(`${this.baseUrl}/${order.Id}`, order);
   }
 
   // Metoda do usuwania zamówienia
