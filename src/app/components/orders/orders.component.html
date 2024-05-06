@@ -1,19 +1,18 @@
-<p-table [value]="orders" [resizableColumns]="true" [tableStyle]="{'min-width': '60rem'}">
+<div style="padding-left: 20px;">
+    <label for="selectedColumns">Wybierz pola do wyświetlenia:</label>
+    <p-multiSelect id="selectedColumns" [options]="columnOptions" [(ngModel)]="selectedColumns" (onChange)="onColumnToggle($event)"></p-multiSelect>
+</div>
+
+<p-table [value]="orders" [resizableColumns]="true" [scrollable]="true" scrollHeight="83vh" class="centerItems" [style]="{'min-width': '40rem'}">
     <ng-template pTemplate="header">
         <tr>
-            <th>Id</th>
-            <th>Client</th>
-            <th>Order Date</th>
-            <th>Status</th>
-            <th style="width: 5rem">Action</th>
+            <th *ngFor="let col of selectedColumns">{{col.header}}</th>
+            <th>Action</th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-order>
         <tr>
-            <td>{{order.id}}</td>
-            <td>{{order.customer}}</td>
-            <td>{{order.orderDate | date}}</td>
-            <td>{{order.status}}</td>
+            <td *ngFor="let col of selectedColumns">{{order[col.field]}}</td>
             <td>
                 <p-button icon="pi pi-check" [rounded]="true" severity="warning" label="Edit"></p-button>
             </td>

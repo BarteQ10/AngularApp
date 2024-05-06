@@ -1,6 +1,14 @@
-.p-element {
+
+@media (max-width: 768px) {
+p-table {
+    flex-basis: 100%; /* Tabela zajmuje całą szerokość na mniejszych ekranach */
+}
+}
+  p-table {
     padding: 20px;
-    height: calc(100vh - 40px); /* Odjęcie 40px - 20px odstępu górnego i 20px odstępu dolnego */
-    box-sizing: border-box;
-    width: 80%;
+    display: flex;
+    flex-basis: 80%; /* Minimalna szerokość tabeli */
+  }
+td {
+    flex-grow: 1; /* Kolumny będą rozciągać się równomiernie */
 }
