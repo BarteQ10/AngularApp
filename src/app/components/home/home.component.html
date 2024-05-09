@@ -1,5 +1,5 @@
 <div fxLayout="row wrap" fxLayoutAlign="center center" style="align-items: center;">
-  <div *ngFor="let item of cardItems" class="p-card" (click)="navigateTo(item.route)">
+  <div *ngFor="let item of cardItems" class="p-card" (click)="navigateTo(item.route)" [class.admin-card]="isAdmin">
     <div class="card-header">
       <span class="{{ item.icon }}"></span> {{ item.title }}
     </div>

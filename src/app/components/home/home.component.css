@@ -27,4 +27,7 @@
   .p-card .p-card-footer button {
     width: 100%;
   }
-  
+  .admin-card {
+    background-color: rgba(105, 0, 47, 0.627);
+    /* Dodaj inne style według potrzeb */
+  }
