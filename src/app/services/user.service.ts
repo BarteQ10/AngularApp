@@ -36,4 +36,11 @@ export class UserService {
   private getAuthToken(): string {
     return sessionStorage.getItem('jwt_token') || ''; // Sprawdź, czy token istnieje w sesji
   }
+  getAllUsers(): Observable<User[]>{
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.getAuthToken()}` // Dodaj token autoryzacyjny
+    });
+    return this.http.get<User[]>(`${this.baseUrl}/get-all-users/`, { headers });
+  }
 }

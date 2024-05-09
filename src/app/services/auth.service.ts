@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class AuthService {
   private baseUrl = 'http://127.0.0.1:8000'
   constructor(private http: HttpClient) { }
-
+  userRole: string = '';
   registerUser(registerData: Register): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -26,6 +26,17 @@ export class AuthService {
     return this.http.post(`${this.baseUrl}/login/`, loginData, { headers });
   }
 
+  getUserRole() {
+    let payload;
+    let token = sessionStorage.getItem('jwt_token');
+  if (token) {
+    payload = token.split(".")[1];
+    payload = window.atob(payload);
+    return JSON.parse(payload).RoleName
+  } else {
+    return null;
+  }
+  }
   disableUser(): Observable<any> {
     
     const token = sessionStorage.getItem('jwt_token');

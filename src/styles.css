@@ -6,3 +6,9 @@ body{
   height: 100%;
   margin: 0;
 }
+
+.centerItems {
+  display: flex;
+  justify-content: center; /* wyśrodkowanie poziome */
+  align-items: center; /* wyśrodkowanie pionowe */
+}

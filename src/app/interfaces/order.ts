@@ -1,7 +1,20 @@
-// interfaces/order.ts
 export interface Order {
-    id: number;
-    customer: string;
-    orderDate: Date;
-    status: string;
-  }
+  Id: number;
+  StatusName: string;
+  SenderMail: string;
+  ReceiverMail: string;
+  ChamberSize: string;
+  PaymentMethodName: string;
+  Description: string;
+  Active: boolean;
+  StartDate: string;
+  EndDate: string;
+  MachineIdFrom: number;
+  MachineIdTo: number;
+  DeliveryDate: string;
+  ReturnDeliveryDate: string | null;
+  Postponed: boolean;
+  PostponedDays: number | null;
+  IsReturn: boolean;
+  DeliveryCost: number;
+}
