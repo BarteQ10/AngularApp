@@ -1,1 +1,21 @@
-<p>admin-users works!</p>
+<div style="padding-left: 20px;">
+    <label for="selectedColumns">Wybierz pola do wyświetlenia:</label>
+    <p-multiSelect id="selectedColumns" [options]="columnOptions" [(ngModel)]="selectedColumns" (onChange)="onColumnToggle($event)"></p-multiSelect>
+</div>
+
+<p-table [value]="users" [resizableColumns]="true" [scrollable]="true" scrollHeight="83vh" class="centerItems" [style]="{'min-width': '40rem'}">
+    <ng-template pTemplate="header">
+        <tr>
+            <th *ngFor="let col of selectedColumns">{{col.header}}</th>
+            <th>Action</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-order>
+        <tr>
+            <td *ngFor="let col of selectedColumns">{{order[col.field]}}</td>
+            <td>
+                <p-button icon="pi pi-check" [rounded]="true" severity="warning" label="Edit"></p-button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

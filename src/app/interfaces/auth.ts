@@ -1,8 +1,8 @@
 export interface User {
-    id:string;
-    fullName: string;
-    email: string;
-    password: string;
+    Id: string;
+    Mail: string;
+    Password: string;
+    Active: boolean;
 }
 
 export interface Login {

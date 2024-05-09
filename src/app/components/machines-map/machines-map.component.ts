@@ -52,6 +52,10 @@ export class MachinesMapComponent {
       const marker = new google.maps.Marker({
         position: point,
         map: map,
+        icon: {
+          url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png', // Ustawienie koloru na zielony
+          scaledSize: new google.maps.Size(40, 40) // Ustawienie rozmiaru ikony
+        },
         title: `${index + 1}`
       });
   

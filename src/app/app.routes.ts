@@ -10,6 +10,9 @@ import { FavouriteMSBOXComponent } from './components/favourite-msbox/favourite-
 import { ChangeUserDataComponent } from './components/change-user-data/change-user-data.component';
 import { SendParcelComponent } from './components/send-parcel/send-parcel.component';
 import { ParcelReturnsComponent } from './components/parcel-returns/parcel-returns.component';
+import { AdminMachinesComponent } from './components/admin-machines/admin-machines.component';
+import { AdminOrdersComponent } from './components/admin-orders/admin-orders.component';
+import { AdminUsersComponent } from './components/admin-users/admin-users.component';
 
 export const routes: Routes = [
     {
@@ -34,6 +37,18 @@ export const routes: Routes = [
     {
         path: 'register', 
         component: RegisterComponent
+    },
+    {
+        path: 'machinesAdmin',
+        component: AdminMachinesComponent
+    },
+    {
+        path: 'ordersAdmin',
+        component: AdminOrdersComponent
+    },
+    {
+        path: 'usersAdmin',
+        component: AdminUsersComponent
     },
     {
         path: 'suspendAccount',
