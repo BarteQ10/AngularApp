@@ -1,0 +1,4 @@
+<div *ngIf="qrData">
+    <qrcode [qrdata]="qrData" [width]="400" [errorCorrectionLevel]="'M'"></qrcode>
+    <p>Chamber: {{qrData}}</p>
+  </div>

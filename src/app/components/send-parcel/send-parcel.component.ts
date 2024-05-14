@@ -25,6 +25,8 @@ export class SendParcelComponent implements OnInit {
   packageForm!: FormGroup;
   selectedSize: string | null = null;
   selectedPaymentMethodId: number | null = null;
+  machineLabelFrom:string | null = null;
+  machineLabelTo:string | null = null;
   handleMachinesSelected(event: { machineIdFrom: number | null, machineIdTo: number | null }) {
     // Zapisz wybrane maszyny
     this.selectedMachines = event;
@@ -69,13 +71,19 @@ export class SendParcelComponent implements OnInit {
     const ref = this.dialogService.open(MachinesMapComponent, {
       header: 'Parcel Modal',
       width: '80%',
+      data: {
+        machineSize: this.selectedSize
+      }
     });
   
-    ref.onClose.subscribe((machinesSelected: { machineIdFrom: number | null, machineIdTo: number | null }) => {
+    ref.onClose.subscribe((machinesSelected: { machineIdFrom: number | null, machineIdTo: number | null, 
+      machineLabelFrom: string |null, machineLabelTo: string |null }) => {
       console.log(machinesSelected);
       if (machinesSelected) {
         this.packageForm.get('MachineIdFrom')?.setValue(machinesSelected.machineIdFrom); // Ustaw machineIdFrom w formularzu
         this.packageForm.get('MachineIdTo')?.setValue(machinesSelected.machineIdTo); // Ustaw machineIdTo w formularzu
+        this.machineLabelFrom = machinesSelected.machineLabelFrom;
+        this.machineLabelTo = machinesSelected.machineLabelTo;
       }
     });
   }

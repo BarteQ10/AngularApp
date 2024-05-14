@@ -14,7 +14,8 @@
         <tr>
             <td *ngFor="let col of selectedColumns">{{order[col.field]}}</td>
             <td>
-                <p-button icon="pi pi-check" [rounded]="true" severity="warning" label="Edit"></p-button>
+                {{ updateButtonLabel(order) }}
+                <p-button *ngIf="showEditButtonCondition(order)" icon="pi pi-check" [rounded]="true" severity="warning" [label]="editButtonLabel" (click)="openQrCodeModal(order)"></p-button>
             </td>
         </tr>
     </ng-template>
