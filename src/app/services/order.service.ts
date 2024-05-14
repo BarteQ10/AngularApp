@@ -13,18 +13,20 @@ export class OrderService {
   constructor(private http: HttpClient, private authService: AuthService) { }
 
   // Metoda do pobierania wszystkich zamówień
-  getOrders(): Observable<Order[]> {
+  getAllOrders(): Observable<Order[]> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${this.getAuthToken()}` // Dodaj token autoryzacyjny
     });
-    //return this.http.get<Order[]>(this.apiUrl);
-    // const orders: Order[] = [
-    //   { id: 1, customer: 'John Doe', orderDate: new Date(), status: 'Pending' },
-    //   { id: 2, customer: 'Jane Smith', orderDate: new Date(), status: 'Processing' },
-    //   { id: 3, customer: 'Alice Johnson', orderDate: new Date(), status: 'Completed' }
-    // ];
     return this.http.get<Order[]>(`${this.baseUrl}/get-all-orders/`,{ headers });
+  }
+  getAllOrdersForUser(): Observable<Order[]> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.getAuthToken()}` // Dodaj token autoryzacyjny
+    });
+    const userId = this.authService.getUserId(this.getAuthToken())
+    return this.http.get<Order[]>(`${this.baseUrl}/get-user-orders/${userId}/`,{ headers });
   }
 
   // Metoda do pobierania jednego zamówienia po ID

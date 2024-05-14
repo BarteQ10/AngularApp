@@ -51,7 +51,7 @@ export class AdminOrdersComponent implements OnInit {
     this.selectedColumns = JSON.parse(storedColumns);
    } 
   ngOnInit(): void {
-    this.orderService.getOrders().subscribe(
+    this.orderService.getAllOrders().subscribe(
       (orders: Order[]) => {
         this.orders = orders; 
       },

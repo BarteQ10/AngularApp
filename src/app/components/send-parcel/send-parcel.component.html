@@ -50,15 +50,17 @@
         <input pInputText id="Description" class="w-full" formControlName="Description"/>
       </div>
       <div class="field">
-        <label for="MachineIdFrom">MachineIdFrom</label>
+        <label for="MachineNameFrom">Machine From</label>
         <div class="p-inputgroup w-full">
-          <p-inputNumber id="MachineIdFrom" class="w-full" formControlName="MachineIdFrom"></p-inputNumber>
+          <!-- <p-inputNumber id="MachineIdFrom" class="w-full" formControlName="MachineIdFrom"></p-inputNumber> -->
+          <p>{{machineLabelFrom}}</p>
         </div>
       </div>
       <div class="field">
-        <label for="MachineIdTo">MachineIdTo</label>
+        <label for="MachineNameTo">Machine To</label>
         <div class="p-inputgroup w-full">
-          <p-inputNumber id="MachineIdTo" class="w-full" formControlName="MachineIdTo"></p-inputNumber>
+          <!-- <p-inputNumber id="MachineIdTo" class="w-full" formControlName="MachineIdTo"></p-inputNumber> -->
+          <p>{{machineLabelTo}}</p>
         </div>
       </div>
       <div *ngIf="selectedSize">
