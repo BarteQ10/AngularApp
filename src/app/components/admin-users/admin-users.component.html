@@ -1,21 +1,30 @@
-<div style="padding-left: 20px;">
-    <label for="selectedColumns">Wybierz pola do wyświetlenia:</label>
-    <p-multiSelect id="selectedColumns" [options]="columnOptions" [(ngModel)]="selectedColumns" (onChange)="onColumnToggle($event)"></p-multiSelect>
-</div>
-
 <p-table [value]="users" [resizableColumns]="true" [scrollable]="true" scrollHeight="83vh" class="centerItems" [style]="{'min-width': '40rem'}">
     <ng-template pTemplate="header">
         <tr>
             <th *ngFor="let col of selectedColumns">{{col.header}}</th>
-            <th>Action</th>
+            <th>Edit</th>
+            <th>Action</th>  
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-order>
+    <ng-template pTemplate="body" let-user>
         <tr>
-            <td *ngFor="let col of selectedColumns">{{order[col.field]}}</td>
+            <td *ngFor="let col of selectedColumns">{{user[col.field]}}</td>
             <td>
-                <p-button icon="pi pi-check" [rounded]="true" severity="warning" label="Edit"></p-button>
+                <p-button 
+                    [rounded]="true" 
+                    [label]="'Edit'"
+                    (click)="openModalFromButton(user)">
+                </p-button>
             </td>
+            <td>
+                <p-button 
+                    [icon]="user.Active ? 'pi pi-times' : 'pi pi-check'" 
+                    [rounded]="true" 
+                    [severity]="user.Active ? 'danger' : 'success'" 
+                    [label]="user.Active ? 'Deactivate' : 'Activate'"
+                    (click)={}>
+                </p-button>
+            </td> 
         </tr>
     </ng-template>
 </p-table>

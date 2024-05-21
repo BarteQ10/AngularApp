@@ -28,18 +28,14 @@ export class OrdersComponent implements OnInit {
   showEditButton: boolean = true;
   constructor(private orderService: OrderService, private dialogService: DialogService) {
     this.columnOptions = [
-      { label: 'Id', field: 'Id', header: 'Id' },
       { label: 'Status Name', field: 'StatusName', header: 'Status Name' },
       { label: 'Sender Mail', field: 'SenderMail', header: 'Sender Mail' },
       { label: 'Receiver Mail', field: 'ReceiverMail', header: 'Receiver Mail' },
-      { label: 'Payment Method Name', field: 'PaymentMethodName', header: 'Payment Method Name' },
       { label: 'Description', field: 'Description', header: 'Description' },
-      { label: 'Active', field: 'Active', header: 'Active' },
       { label: 'Start Date', field: 'StartDate', header: 'Start Date' },
       { label: 'End Date', field: 'EndDate', header: 'End Date' },
       { label: 'Machine From', field: 'MachineCodeFrom', header: 'Machine From' },
       { label: 'Machine To', field: 'MachineCodeTo', header: 'Machine To' },
-      { label: 'Chamber', field: 'ChamberId', header: 'Chamber' },
       { label: 'Delivery Date', field: 'DeliveryDate', header: 'Delivery Date' },
       { label: 'Return Delivery Date', field: 'ReturnDeliveryDate', header: 'Return Delivery Date' },
       { label: 'Postponed', field: 'Postponed', header: 'Postponed' },

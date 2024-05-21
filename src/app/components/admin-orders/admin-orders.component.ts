@@ -42,10 +42,10 @@ export class AdminOrdersComponent implements OnInit {
       { label: 'Delivery Cost', field: 'DeliveryCost', header: 'Delivery Cost' }
   ];
 
-  let storedColumns = localStorage.getItem('selectedColumns');
+  let storedColumns = localStorage.getItem('selectedColumnsAdminOrders');
     if (!storedColumns) {
         storedColumns = JSON.stringify(this.columnOptions.slice(0, 5).map(option => option)); // Ustaw pierwsze pięć kolumn
-        localStorage.setItem('selectedColumns', storedColumns);
+        localStorage.setItem('selectedColumnsAdminOrders', storedColumns);
     }
 
     this.selectedColumns = JSON.parse(storedColumns);
@@ -62,6 +62,6 @@ export class AdminOrdersComponent implements OnInit {
   }
   onColumnToggle(event: any): void {
     this.selectedColumns = event.value;
-    localStorage.setItem('selectedColumns', JSON.stringify(this.selectedColumns));
+    localStorage.setItem('selectedColumnsAdminOrders', JSON.stringify(this.selectedColumns));
 }
 }
