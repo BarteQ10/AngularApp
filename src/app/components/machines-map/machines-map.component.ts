@@ -43,8 +43,6 @@ export class MachinesMapComponent {
       (userData: Partial<any>) => {
         this.cameraLat=userData['Latitude']
         this.cameraLng=userData['Longitude']
-        console.log(this.cameraLat)
-        console.log(this.cameraLng)
         if (this.cameraLat !== 0 || this.cameraLng !== 0) {
           this.tempMarker = new google.maps.Marker({
             position: { lat: this.cameraLat-0.001, lng: this.cameraLng },
@@ -88,7 +86,8 @@ export class MachinesMapComponent {
           },
           label: `${machine.Address}, ${machine.Location}`,
           id: machine.Id,
-          postalCode: machine.PostalCode
+          postalCode: machine.PostalCode,
+          isFav: machine.IsFav
           // Add more properties as needed for the marker popup
         }));
 
@@ -100,19 +99,17 @@ export class MachinesMapComponent {
     );
   }
   handleMapInitialized(map?: google.maps.Map) {
-    console.log('markerInfo');
     this.map = map; 
     
     if (this.tempMarker) {
       let tempPosition = this.tempMarker.getPosition() as google.maps.LatLng;
     
       this.markers.forEach((markerInfo: any, index) => {
-        console.log(markerInfo)
         const marker = new google.maps.Marker({
           position: markerInfo.position,
           map: map,
           icon: {
-            url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png', // Setting color to blue
+            url: markerInfo.isFav ? 'http://maps.google.com/mapfiles/ms/icons/red-dot.png' : 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
             scaledSize: new google.maps.Size(40, 40) // Setting icon size
           },
           title: ''+markerInfo.id
@@ -129,7 +126,10 @@ export class MachinesMapComponent {
         });
     
         marker.addListener('click', () => {
-          const markerPosition = marker.getPosition();
+          this.setFrom(marker.getTitle() || null);
+          this.setTo(marker.getTitle() || null);
+        });
+        marker.addListener('dblclick', () => {const markerPosition = marker.getPosition();
           this.setFrom(marker.getTitle() || null);
           this.setTo(marker.getTitle() || null);
           if (markerPosition && tempPosition) {
@@ -143,7 +143,6 @@ export class MachinesMapComponent {
             infoWindow.open(map, marker);
           }
         });
-    
         this.infoWindows.push(infoWindow);
       });
     }

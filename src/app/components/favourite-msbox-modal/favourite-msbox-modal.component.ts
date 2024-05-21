@@ -100,7 +100,6 @@ export class FavouriteMsboxModalComponent {
       let tempPosition = this.tempMarker.getPosition() as google.maps.LatLng;
     
       this.markers.forEach((markerInfo: any, index) => {
-        console.log(markerInfo)
         const marker = new google.maps.Marker({
           position: markerInfo.position,
           map: map,
@@ -122,7 +121,9 @@ export class FavouriteMsboxModalComponent {
         });
     
         marker.addListener('click', () => {
-          const markerPosition = marker.getPosition();
+          this.setFrom(marker.getTitle() || null);
+        });
+        marker.addListener('dblclick', () => {const markerPosition = marker.getPosition();
           this.setFrom(marker.getTitle() || null);
           if (markerPosition && tempPosition) {
             const distance = this.calculateDistance(
@@ -135,6 +136,7 @@ export class FavouriteMsboxModalComponent {
             infoWindow.open(map, marker);
           }
         });
+        this.infoWindows.push(infoWindow);
     
         this.infoWindows.push(infoWindow);
       });

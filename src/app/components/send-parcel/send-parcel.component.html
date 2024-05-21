@@ -1,36 +1,23 @@
-<div class="container" *ngIf="!selectedSize" style="margin-top: 20px;">
+<div class="container" *ngIf="!selectedSize" style="margin-top: 20px; display: flex; justify-content: center;">
   <div class="card-container">
-    <p-card header="Small" [style]="{width:'360px'}" (click)="selectSize('S')">
+    <p-card *ngFor="let sizeWithPrice of sizesWithPrices" [header]="getSizeHeader(sizeWithPrice.Size)" [style]="{width:'300px', margin: '10px'}" (click)="selectSize(sizeWithPrice.Size)">
       <div class="placeholder">
-        <!-- Tutaj dodaj placeholder na zdjęcie -->
+        <!-- img placeholder -->
       </div>
-      <p>Size: S</p>
-      <p>Price: $X.XX</p>
-    </p-card>
-    <p-card header="Medium" [style]="{width:'360px'}" (click)="selectSize('M')">
-      <div class="placeholder">
-        <!-- Tutaj dodaj placeholder na zdjęcie -->
-      </div>
-      <p>Size: M</p>
-      <p>Price: $X.XX</p>
-    </p-card>
-    <p-card header="Large" [style]="{width:'360px'}" (click)="selectSize('L')">
-      <div class="placeholder">
-        <!-- Tutaj dodaj placeholder na zdjęcie -->
-      </div>
-      <p>Size: L</p>
-      <p>Price: $X.XX</p>
+      <p>Size: {{ sizeWithPrice.Size }}</p>
+      <p>Price: {{ (sizeWithPrice.Price/100).toFixed(2) }}$</p>
     </p-card>
   </div>
 </div>
+
 
 <div *ngIf="selectedSize" class="centerItems" style="margin-top: 20px;">
 <form [formGroup]="packageForm" (ngSubmit)="submitForm()">
     <p-card header="Parcel Information" [style]="{width:'500px'}">
       <div class="field">
-        <label for="ReceiverId">ReceiverId</label>
+        <label for="ReceiverMail">Receiver Mail</label>
         <div class="p-inputgroup w-full">
-          <p-inputNumber id="ReceiverId" class="w-full" formControlName="ReceiverId"></p-inputNumber>
+          <input pInputText id="ReceiverMail" class="w-full" formControlName="ReceiverMail">
         </div>
       </div>
       <div class="field">
@@ -64,10 +51,10 @@
         </div>
       </div>
       <div *ngIf="selectedSize">
-        <button pButton type="button" label="Open Modal" icon="pi pi-plus" (click)="showParcelModal()"></button>
+        <button pButton type="button" label="Select Machines" icon="pi pi-plus" (click)="showParcelModal()"></button>
       </div>
       <div style="margin-top: 20px;">
-        <p-button label="Submit" styleClass="w-full" type="submit" severity="success"></p-button>
+        <p-button label="Send" styleClass="w-full" type="submit" severity="success"></p-button>
       </div>
     </p-card>
   </form>
