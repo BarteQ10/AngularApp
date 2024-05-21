@@ -1,1 +1,30 @@
-<p>favourite-msbox works!</p>
+<div>
+    <p-button styleClass="p-button-raised p-button-success" label="Add Favorite" (click)="openModal()"></p-button>
+    <p-table [value]="favoriteMachines">
+        <ng-template pTemplate="header">
+            <tr>
+                <ng-container *ngFor="let col of getColumns(); let i=index">
+                    <th [style.textAlign]="col === 'IsFav' ? 'center' : 'left'">{{ col === 'IsFav' ? 'Favorite' : col }}</th>
+                </ng-container>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-item>
+            <tr>
+                <ng-container *ngFor="let col of getColumns(); let i=index">
+                    <td [style.textAlign]="col === 'IsFav' ? 'center' : 'left'">
+                        <ng-container *ngIf="col === 'IsFav'">
+                            <i class="pi" 
+                               [ngClass]="{'pi-heart-fill': item[col], 'pi-heart': !item[col]}" 
+                               style="color: red;"
+                               (click)="toggleFavourite(item['Id'])"></i>
+                        </ng-container>
+                        <ng-container *ngIf="col !== 'IsFav'">
+                            {{ item[col] }}
+                        </ng-container>
+                    </td>
+                </ng-container>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

@@ -11,6 +11,7 @@ import { MachinesMapComponent } from '../machines-map/machines-map.component';
 import { DialogModule } from 'primeng/dialog';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { CommonModule } from '@angular/common';
+import { PaymentService } from '../../services/payment.service';
 
 @Component({
   selector: 'app-send-parcel',
@@ -27,28 +28,43 @@ export class SendParcelComponent implements OnInit {
   selectedPaymentMethodId: number | null = null;
   machineLabelFrom:string | null = null;
   machineLabelTo:string | null = null;
+  sizesWithPrices: any[] = [];
   handleMachinesSelected(event: { machineIdFrom: number | null, machineIdTo: number | null }) {
-    // Zapisz wybrane maszyny
     this.selectedMachines = event;
   }
-  paymentMethods: any[] = [
-    { Id: 1, PaymentName: 'Karta płatnicza' },
-    { Id: 2, PaymentName: 'Przelew' },
-    { Id: 3, PaymentName: 'BLIK' }
-  ];
-  constructor(private dialogService: DialogService, private fb: FormBuilder, private orderService: OrderService, private messageService: MessageService, private authService: AuthService) { }
+  paymentMethods: any[] = [];
+  constructor(private dialogService: DialogService, 
+    private fb: FormBuilder, private orderService: OrderService, 
+    private messageService: MessageService, private authService: AuthService,
+    private paymentService: PaymentService) { }
 
   ngOnInit(): void {
     
     this.packageForm = this.fb.group({
-      SenderId: [this.authService.getUserId(sessionStorage.getItem('jwt_token') || '')],
-      ReceiverId: ['', Validators.required],
+      SenderMail: [sessionStorage.getItem('email' || '')],
+      ReceiverMail: ['', Validators.required],
       PaymentMethodId: ['', Validators.required],
       Description: ['', Validators.required],
       MachineIdFrom: ['', Validators.required],
       MachineIdTo: ['', Validators.required],
       Size: ['', Validators.required]
     });
+    this.paymentService.getAllPaymentMethods().subscribe(
+      (methods: any[]) => {
+        this.paymentMethods = methods;
+      },
+      (error) => {
+        console.error('Error occurred while fetching payment methods:', error);
+      }
+    );
+    this.paymentService.getSizePrices().subscribe(
+      (sizesWithPrices: any[]) => {
+        this.sizesWithPrices = sizesWithPrices;
+      },
+      (error) => {
+        console.error('Error occurred while fetching size prices:', error);
+      }
+    );
   }
   getPaymentIcon(paymentId: number): string {
     switch (paymentId) {
@@ -69,7 +85,7 @@ export class SendParcelComponent implements OnInit {
   }
   showParcelModal() {
     const ref = this.dialogService.open(MachinesMapComponent, {
-      header: 'Parcel Modal',
+      header: 'Select Machines',
       width: '80%',
       data: {
         machineSize: this.selectedSize
@@ -100,11 +116,31 @@ export class SendParcelComponent implements OnInit {
       );
   } else {
     this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid order form' });
-    // Tutaj możesz dodać logikę obsługi błędów walidacji formularza
   }
   }
   selectSize(size : string){
     this.selectedSize = size;
     this.packageForm.get('Size')?.setValue(size);
+
+    const selectedSizePrice = this.sizesWithPrices.find(item => item.Size === size)?.Price;
+    if (selectedSizePrice !== undefined) {
+      // Zaktualizuj cenę w widoku
+      const priceElement = document.getElementById('price');
+      if (priceElement) {
+        priceElement.innerText = `$${selectedSizePrice.toFixed(2)}`;
+      }
+    }
+  }
+  getSizeHeader(size: string): string {
+    switch (size) {
+      case 'S':
+        return 'Small';
+      case 'M':
+        return 'Medium';
+      case 'L':
+        return 'Large';
+      default:
+        return '';
+    }
   }
 }

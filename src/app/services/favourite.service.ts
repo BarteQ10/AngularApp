@@ -1,31 +1,34 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
-import { Machine } from '../interfaces/machine';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MachineService {
-  private baseUrl = 'http://127.0.0.1:8000'
+export class FavouriteService {
+
+  private apiUrl = 'http://127.0.0.1:8000/';
+
   constructor(private http: HttpClient, private authService: AuthService) { }
 
-
-  getAllMachines(): Observable<Machine[]>{
+  addFavouriteMachine(machineId: number): Observable<any> {
     const userId = this.authService.getUserId(sessionStorage.getItem('jwt_token') || '')
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${sessionStorage.getItem('jwt_token') || ''}` // Dodaj token autoryzacyjny
     });
-    return this.http.get<Machine[]>(`${this.baseUrl}/get-all-machines/${userId}/`,{ headers });
+    const url = `${this.apiUrl}add-favourite-machine/${userId}/${machineId}/`;
+    return this.http.post(url,null, { headers });
   }
-  getMachinesBySize(size : String): Observable<any[]>{
+
+  removeFavouriteMachine(machineId: number): Observable<any> {
     const userId = this.authService.getUserId(sessionStorage.getItem('jwt_token') || '')
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${sessionStorage.getItem('jwt_token') || ''}` // Dodaj token autoryzacyjny
     });
-    return this.http.get<any[]>(`${this.baseUrl}/get-available-machines-by-size/${size}/${userId}/`,{ headers });
+    const url = `${this.apiUrl}remove-favourite-machine/${userId}/${machineId}/`;
+    return this.http.post(url,null, { headers });
   }
 }

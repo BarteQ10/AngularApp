@@ -12,12 +12,12 @@ export class UserService {
   constructor(private http: HttpClient, private authService: AuthService) { }
 
   // Pobierz dane użytkownika z serwera
-  getUserData(): Observable<User> {
+  getUserData(userId : number): Observable<User> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${this.getAuthToken()}` // Dodaj token autoryzacyjny
     });
-    const userId = this.authService.getUserId(this.getAuthToken())
+    
     return this.http.get<User>(`${this.baseUrl}/get-user-by-id/${userId}`, { headers });
   }
 
@@ -27,9 +27,8 @@ export class UserService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${this.getAuthToken()}` // Dodaj token autoryzacyjny
     });
-    const userId = this.authService.getUserId(this.getAuthToken())
 
-    return this.http.put(`${this.baseUrl}/edit-user/${userId}/`, userData, { headers });
+    return this.http.put(`${this.baseUrl}/edit-user/${userData.Id}/`, userData, { headers });
   }
 
   // Pobierz token autoryzacyjny z sesji

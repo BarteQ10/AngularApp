@@ -1,0 +1,21 @@
+<div style="display: flex; flex-direction: row;">
+    <div style="width: 80%;">
+      <google-map height="300px"
+                  width="100%"
+                  [center]="center"
+                  [zoom]="zoom"
+                  (mapClick)="moveMap($event)"
+                  (mapInitialized)="handleMapInitialized($event)">
+      </google-map>
+    </div>
+  
+    <div style="margin-left: 20px; display: flex; flex-direction: column;">
+      
+      <div style="display: flex; flex-direction: row; justify-content: flex-start; margin-top: auto;">
+      </div>
+      
+      <div style="display: flex; flex-direction: row; justify-content: flex-end; margin-top: 10px;">
+        <p-button styleClass="p-button-raised p-button-text p-button-success" label="Add Favorite" (click)="setNewFavourite()"></p-button>
+      </div>
+    </div>
+  </div>

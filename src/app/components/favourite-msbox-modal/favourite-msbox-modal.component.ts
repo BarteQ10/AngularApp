@@ -1,48 +1,42 @@
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { GoogleMapsModule } from '@angular/google-maps';
-import { ChangeDetectorRef } from '@angular/core';
-import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { ButtonModule } from 'primeng/button';
-import { MachineService } from '../../services/machine.service';
-import { identity } from 'rxjs';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { UserService } from '../../services/user.service';
+import { MachineService } from '../../services/machine.service';
+import { ButtonModule } from 'primeng/button';
 import { AuthService } from '../../services/auth.service';
+import { FavouriteService } from '../../services/favourite.service';
+import { MessageService } from 'primeng/api';
 @Component({
-  selector: 'app-machines-map',
+  selector: 'app-favourite-msbox-modal',
   standalone: true,
   imports: [GoogleMapsModule, ButtonModule],
-  templateUrl: './machines-map.component.html',
-  styleUrls: ['./machines-map.component.css'],
-  providers:[DialogService]
+  templateUrl: './favourite-msbox-modal.component.html',
+  styleUrl: './favourite-msbox-modal.component.css'
 })
-export class MachinesMapComponent {
-  @Input() machineSize: string | '';
-  @Output() machinesSelected = new EventEmitter<{ machineIdFrom: number | null, machineIdTo: number | 
-    null, machineLabelFrom: string |null, machineLabelTo: string |null}>();
-  config = inject(DynamicDialogConfig);
-  machineFromAddress: string = ''; 
-  machineToAddress: string = '';
-  machineFromId: number = 0; 
-  machineToId: number = 0;
-  machineLabelFrom: string = ''; // Dodano etykietę maszyny From
-  machineLabelTo: string = '';
+export class FavouriteMsboxModalComponent {
+  machineFavouriteAddress: string = ''; 
+  machineFavouriteId: number = 0; 
+  machineLabelFavourite: string = ''; // Dodano etykietę maszyny From
   cameraLat:number = 0;
   cameraLng:number = 0;
-  newFrom: boolean = false;
-  newTo: boolean = false;
+  newFavourite: boolean = false;
   markers: any[] = [];
   tempMarker: google.maps.Marker | undefined;
   map: google.maps.Map | undefined;
   constructor(private ref: DynamicDialogRef, private cd: ChangeDetectorRef,
     private userService: UserService,
-    private machineService: MachineService, private dialogService: DialogService, private authService: AuthService) {
-    this.machineSize = this.config.data.machineSize
+    private machineService: MachineService, 
+    private messageService: MessageService,
+    private authService : AuthService,
+    private favoriteService : FavouriteService) {
     const userId = this.authService.getUserId(sessionStorage.getItem('jwt_token') || '')
-    console.log("Init "+userId);
     this.userService.getUserData(userId).subscribe(
       (userData: Partial<any>) => {
         this.cameraLat=userData['Latitude']
         this.cameraLng=userData['Longitude']
+        console.log(this.cameraLat)
+        console.log(this.cameraLng)
         if (this.cameraLat !== 0 || this.cameraLng !== 0) {
           this.tempMarker = new google.maps.Marker({
             position: { lat: this.cameraLat-0.001, lng: this.cameraLng },
@@ -77,7 +71,7 @@ export class MachinesMapComponent {
     if (event.latLng != null) this.center = event.latLng.toJSON();
   }
   initMapAndMarkers() {
-    this.machineService.getMachinesBySize(this.config.data.machineSize).subscribe(
+    this.machineService.getAllMachines().subscribe(
       (machines: any[]) => {
         this.markers = machines.map(machine => ({
           position: {
@@ -99,6 +93,7 @@ export class MachinesMapComponent {
     );
   }
   handleMapInitialized(map?: google.maps.Map) {
+    console.log('markerInfo');
     this.map = map; 
     
     if (this.tempMarker) {
@@ -127,11 +122,9 @@ export class MachinesMapComponent {
     
         marker.addListener('click', () => {
           this.setFrom(marker.getTitle() || null);
-          this.setTo(marker.getTitle() || null);
         });
         marker.addListener('dblclick', () => {const markerPosition = marker.getPosition();
           this.setFrom(marker.getTitle() || null);
-          this.setTo(marker.getTitle() || null);
           if (markerPosition && tempPosition) {
             const distance = this.calculateDistance(
               tempPosition.lat(),
@@ -144,55 +137,55 @@ export class MachinesMapComponent {
           }
         });
         this.infoWindows.push(infoWindow);
+    
+        this.infoWindows.push(infoWindow);
       });
     }
   }
-  setNewFrom(){
-    this.newFrom=true;
+  setNewFavourite(){
+    this.newFavourite=true;
   }
-  setNewTo(){
-    this.newTo=true;
-  }
+
   async setFrom(marker: string | null) {
-    if (marker && this.newFrom) {
-      this.machineFromAddress = marker;
-      this.machineFromId = parseInt(marker, 10); 
-      this.machineLabelFrom = this.getLabelFromId(this.machineFromId);
-      console.log("machineFromId:", this.machineFromId);
-      this.newFrom = false;
+    if (marker && this.newFavourite) {
+      this.machineFavouriteAddress = marker;
+      this.machineFavouriteId = parseInt(marker, 10); 
+      this.machineLabelFavourite = this.getLabelFromId(this.machineFavouriteId);
+      console.log("machineFromId:", this.machineFavouriteId);
+      this.addFavouriteMachine(this.machineFavouriteId);
+      this.newFavourite = false;
       this.cd.detectChanges();
     }
   }
 
-  async setTo(marker: string | null) {
-    if (marker && this.newTo) {
-      this.machineToAddress = marker;
-      this.machineToId = parseInt(marker, 10);
-      this.machineLabelTo = this.getLabelFromId(this.machineToId);
-      console.log("machineToId:", this.machineToId);
-      this.newTo = false;
-      this.cd.detectChanges();
+  addFavouriteMachine(machineId: number): void {
+    this.favoriteService.addFavouriteMachine(machineId).subscribe(
+      () => {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Machine added to favorites successfully.' }); // Display success message
+        this.updateMarkerIcon(machineId, 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'); // Change marker icon to red
+      },
+      (error) => {
+        console.error('Error occurred while adding machine to favorites:', error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error occurred while adding machine to favorites.' }); // Display error message
+      }
+    );
+  }
+  
+  updateMarkerIcon(machineId: number, iconUrl: string): void {
+    const marker = this.markers.find(marker => marker.id === machineId);
+    if (marker && this.map) {
+      const mapMarker = new google.maps.Marker({
+        position: marker.position,
+        map: this.map,
+        icon: {
+          url: iconUrl,
+          scaledSize: new google.maps.Size(40, 40)
+        },
+        title: '' + marker.id
+      });
+      mapMarker.setMap(this.map);
     }
   }
-  selectMachines(){
-    const emittedData = {
-      machineIdFrom: this.machineFromId,
-      machineLabelFrom: this.machineLabelFrom,
-      machineIdTo: this.machineToId,
-      machineLabelTo: this.machineLabelTo
-    };
-    console.log("Emitted data:", emittedData);
-    this.machinesSelected.emit(emittedData);
-    this.ref.close(emittedData);
-  }
-  deleteFrom(){
-    this.machineFromAddress = '';
-  }
-
-  deleteTo(){
-    this.machineToAddress = '';
-  }
-
   calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
     const R = 6371; // Promień Ziemi w kilometrach
     const dLat = this.toRadians(lat2 - lat1);
