@@ -3,6 +3,7 @@ export interface Order {
   StatusName: string;
   SenderMail: string;
   ReceiverMail: string;
+  ChamberSize: string;
   ChamberId: string;
   PaymentMethodName: string;
   Description: string;

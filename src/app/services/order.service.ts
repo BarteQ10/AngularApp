@@ -28,8 +28,13 @@ export class OrderService {
     const userId = this.authService.getUserId(this.getAuthToken())
     return this.http.get<Order[]>(`${this.baseUrl}/get-user-orders/${userId}/`,{ headers });
   }
-
-  // Metoda do pobierania jednego zamówienia po ID
+  updateOrder(orderData: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.getAuthToken()}` // Dodaj token autoryzacyjny
+    });
+    return this.http.put<any>(`${this.baseUrl}/update-order/`, orderData, { headers });
+  }
   getOrderById(id: number): Observable<Order> {
     return this.http.get<Order>(`${this.baseUrl}/${id}`);
   }
@@ -40,12 +45,6 @@ export class OrderService {
       'Authorization': `Bearer ${this.getAuthToken()}` // Dodaj token autoryzacyjny
     });
     return this.http.post<any>(`${this.baseUrl}/create-order/`, orderData, { headers });
-  }
-
-  // Metoda do aktualizowania istniejącego zamówienia
-  updateOrder(order: Order): Observable<Order> {
-    
-    return this.http.put<Order>(`${this.baseUrl}/${order.Id}`, order);
   }
 
   // Metoda do usuwania zamówienia

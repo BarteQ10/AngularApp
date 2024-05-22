@@ -7,20 +7,23 @@ import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { FormsModule } from '@angular/forms';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { ModifyOrderModalComponent } from '../modify-order-modal/modify-order-modal.component';
 
 @Component({
   selector: 'app-admin-orders',
   standalone: true,
   imports: [TableModule, CommonModule, ButtonModule, CheckboxModule, MultiSelectModule, FormsModule],
   templateUrl: './admin-orders.component.html',
-  styleUrl: './admin-orders.component.css'
+  styleUrl: './admin-orders.component.css',
+  providers:[DialogService]
 })
 export class AdminOrdersComponent implements OnInit {
 
   orders: Order[] = []; 
-  columnOptions: any[]; // Opcje kolumn
-  selectedColumns: any[]; // Wybrane kolumny
-  constructor(private orderService: OrderService) {
+  columnOptions: any[]; 
+  selectedColumns: any[]; 
+  constructor(private orderService: OrderService,private dialogService: DialogService) {
     this.columnOptions = [
       { label: 'Id', field: 'Id', header: 'Id' },
       { label: 'Status Name', field: 'StatusName', header: 'Status Name' },
@@ -51,17 +54,31 @@ export class AdminOrdersComponent implements OnInit {
     this.selectedColumns = JSON.parse(storedColumns);
    } 
   ngOnInit(): void {
-    this.orderService.getAllOrders().subscribe(
-      (orders: Order[]) => {
-        this.orders = orders; 
-      },
-      (error) => {
-        console.error('Błąd podczas pobierania zamówień:', error);
-      }
-    );
+    this.getOrders();
   }
   onColumnToggle(event: any): void {
     this.selectedColumns = event.value;
     localStorage.setItem('selectedColumnsAdminOrders', JSON.stringify(this.selectedColumns));
+}
+getOrders() {
+  this.orderService.getAllOrders().subscribe(
+    (orders: Order[]) => {
+      this.orders = orders; 
+    },
+    (error) => {
+      console.error('Error fetching orders:', error);
+    }
+  );
+}
+openModal(order: Order) {
+  const ref = this.dialogService.open(ModifyOrderModalComponent, {
+    header: 'Edit Order',
+    width: '80%',
+    contentStyle: { 'max-height': '350px', 'overflow': 'auto' },
+    data: { order }
+  });
+  ref.onClose.subscribe((updatedOrder: Order) => {
+    this.getOrders();
+  });
 }
 }
