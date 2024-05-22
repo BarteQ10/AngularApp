@@ -1,0 +1,137 @@
+<div class="container">
+    <div class="p-field">
+        <label for="statusName">Status Name</label>
+        <div class="input-wrapper">
+            <p-dropdown id="statusName" [options]="statusOptions" [(ngModel)]="selectedStatus" 
+            optionLabel="StatusName" (onChange)="onStatusChange($event)"></p-dropdown>
+        </div>
+    </div>
+
+    <div class="p-field">
+        <label for="description">Description</label>
+        <div class="input-wrapper">
+            <input id="description" type="text" pInputText [(ngModel)]="order.Description" />
+        </div>
+    </div>
+
+    <div class="p-field">
+        <label for="deliveryCost">Delivery Cost</label>
+        <div class="input-wrapper">
+            <p-inputNumber id="deliveryCost" [(ngModel)]="order.DeliveryCost" mode="currency" currency="PLN"
+                [minFractionDigits]="2" [maxFractionDigits]="2"></p-inputNumber>
+        </div>
+    </div>
+
+    <div class="p-field-checkbox">
+        <label for="active">Active</label>
+        <div class="input-wrapper">
+            <p-checkbox id="active" [(ngModel)]="order.Active" [binary]="true"></p-checkbox>
+        </div>
+    </div>
+
+    <div class="p-field">
+        <label for="senderMail">Sender Mail</label>
+        <div class="input-wrapper">
+            <input id="senderMail" type="text" pInputText [(ngModel)]="order.SenderMail" />
+        </div>
+    </div>
+
+    <div class="p-field">
+        <label for="receiverMail">Receiver Mail</label>
+        <div class="input-wrapper">
+            <input id="receiverMail" type="text" pInputText [(ngModel)]="order.ReceiverMail" />
+        </div>
+    </div>
+
+    <div class="p-field">
+        <label for="chamberSize">Size</label>
+        <div class="input-wrapper">
+            <p-dropdown id="chamberSize" [options]="sizePrices" [(ngModel)]="selectedSize" 
+            optionLabel="Size" (onChange)="onSizeChange($event)"></p-dropdown>
+        </div>
+    </div>
+
+    <div class="p-field">
+        <label for="paymentMethod">Payment Method</label>
+        <div class="input-wrapper">
+            <p-dropdown id="paymentMethod" [options]="paymentMethods" [(ngModel)]="selectedPaymentMethod" 
+            optionLabel="PaymentName" (onChange)="onPaymentChange($event)"></p-dropdown>
+        </div>
+    </div>
+
+    <div class="p-field">
+        <label for="startDate">Start Date</label>
+        <div class="input-wrapper">
+            <input id="startDate" type="datetime-local" pInputText [(ngModel)]="order.StartDate" />
+        </div>
+    </div>
+
+    <div class="p-field">
+        <label for="endDate">End Date</label>
+        <div class="input-wrapper">
+            <input id="endDate" type="datetime-local" pInputText [(ngModel)]="order.EndDate" />
+        </div>
+    </div>
+
+    <div class="p-field">
+        <label for="machineIdFrom">Machine Id From</label>
+        <div class="input-wrapper">
+            <input id="machineIdFrom" type="number" pInputText [(ngModel)]="order.MachineIdFrom" />
+        </div>
+    </div>
+
+    <div class="p-field">
+        <label for="machineIdTo">Machine Id To</label>
+        <div class="input-wrapper">
+            <input id="machineIdTo" type="number" pInputText [(ngModel)]="order.MachineIdTo" />
+        </div>
+    </div>
+
+    <div class="p-field">
+        <label for="chamberId">Chamber Id</label>
+        <div class="input-wrapper">
+            <input id="chamberId" type="number" pInputText [(ngModel)]="order.ChamberId" />
+        </div>
+    </div>
+
+    <div class="p-field">
+        <label for="deliveryDate">Delivery Date</label>
+        <div class="input-wrapper">
+            <input id="deliveryDate" type="datetime-local" pInputText [(ngModel)]="order.DeliveryDate" />
+        </div>
+    </div>
+
+    <div class="p-field">
+        <label for="returnDeliveryDate">Return Delivery Date</label>
+        <div class="input-wrapper">
+            <input id="returnDeliveryDate" type="datetime-local" pInputText [(ngModel)]="order.ReturnDeliveryDate" />
+        </div>
+    </div>
+
+    <div class="p-field-checkbox">
+        <label for="postponed">Postponed</label>
+        <div class="input-wrapper">
+            <p-checkbox id="postponed" [(ngModel)]="order.Postponed" [binary]="true"></p-checkbox>
+        </div>
+    </div>
+
+    <div class="p-field">
+        <label for="postponedDays">Postponed Days</label>
+        <div class="input-wrapper">
+            <input id="postponedDays" type="number" pInputText [(ngModel)]="order.PostponedDays" />
+        </div>
+    </div>
+
+    <div class="p-field-checkbox">
+        <label for="isReturn">Is Return</label>
+        <div class="input-wrapper">
+            <p-checkbox id="isReturn" [(ngModel)]="order.IsReturn" [binary]="true"></p-checkbox>
+        </div>
+    </div>
+
+    <p-footer class="p-grid p-nogutter p-justify-center">
+        <div class="p-col">
+            <button type="button" pButton label="Save" icon="pi pi-check" (click)="save()"></button>
+        </div>
+    </p-footer>
+</div>
