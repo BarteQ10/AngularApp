@@ -12,11 +12,12 @@ import { DialogModule } from 'primeng/dialog';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { CommonModule } from '@angular/common';
 import { PaymentService } from '../../services/payment.service';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @Component({
   selector: 'app-send-parcel',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, CardModule, ButtonModule, InputTextModule, InputNumberModule, DialogModule],
+  imports: [CommonModule, ReactiveFormsModule, CardModule, ButtonModule, InputTextModule, InputNumberModule, DialogModule, FlexLayoutModule],
   providers: [DialogService],
   templateUrl: './send-parcel.component.html',
   styleUrl: './send-parcel.component.css'

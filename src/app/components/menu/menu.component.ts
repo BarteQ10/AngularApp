@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
@@ -5,7 +6,7 @@ import { MenubarModule } from 'primeng/menubar';
 @Component({
   selector: 'app-menu',
   standalone: true,
-  imports: [RouterModule, MenubarModule],
+  imports: [RouterModule, MenubarModule, CommonModule],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.css'
 })
@@ -20,5 +21,8 @@ export class MenuComponent {
   logOut(){
     sessionStorage.clear();
     this.router.navigate(['login'])
+  }
+  isSessionEmpty(): boolean {
+    return sessionStorage.length === 0;
   }
 }

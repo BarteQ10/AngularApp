@@ -1,8 +1,10 @@
 <p-menubar [model]="items">
     <ng-template pTemplate="start">
-        <img src="https://primefaces.org/cdn/primeng/images/primeng.svg" height="40" class="mr-2" />
+        <a routerLink="/">
+            <img src="https://primefaces.org/cdn/primeng/images/primeng.svg" height="40" class="mr-2" />
+        </a>
     </ng-template>
     <ng-template pTemplate="end">
-        <button class="p-button p-button-secondary" (click)="logOut()">Logout</button>
+        <button *ngIf="!isSessionEmpty()" class="p-button p-button-secondary" (click)="logOut()">Logout</button>
     </ng-template>
 </p-menubar>
