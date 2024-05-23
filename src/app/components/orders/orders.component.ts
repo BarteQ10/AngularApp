@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Order } from '../../interfaces/order';
+import { Order, PostponeOrder } from '../../interfaces/order';
 import { OrderService } from '../../services/order.service';
 import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
@@ -13,6 +13,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { CardModule } from 'primeng/card';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-orders',
   standalone: true,
@@ -35,8 +36,10 @@ export class OrdersComponent implements OnInit {
   daysDialogVisible: boolean = false;
   selectedDays: number = 1;
   selectedOption: string | null = null;
+  selectedOrder: Order | null = null;
   daysOptions: any[] = Array.from({ length: 7 }, (_, i) => ({ label: `${i + 1} days`, value: i + 1 }));
-  constructor(private orderService: OrderService, private dialogService: DialogService) {
+  constructor(private orderService: OrderService, private dialogService: DialogService
+    ,private messageService: MessageService) {
     this.columnOptions = [
       { label: 'Status Name', field: 'StatusName', header: 'Status Name' },
       { label: 'Sender Mail', field: 'SenderMail', header: 'Sender Mail' },
@@ -75,6 +78,16 @@ export class OrdersComponent implements OnInit {
       }
     );
   }
+  refreshOrders(){
+    this.orderService.getAllOrdersForUser().subscribe(
+      (orders: Order[]) => {
+        this.orders = orders.filter(order => order.ReceiverMail === this.senderEmail).filter(order => order.IsReturn === false);;
+      },
+      (error) => {
+        console.error('Błąd podczas pobierania zamówień:', error);
+      }
+    );
+  }
   onColumnToggle(event: any): void {
     this.selectedColumns = event.value;
     localStorage.setItem('selectedColumns', JSON.stringify(this.selectedColumns));
@@ -98,12 +111,21 @@ export class OrdersComponent implements OnInit {
     });
   }
   openPostponeOrderModal(order: Order): void {
+    this.selectedOrder = order;
     this.daysDialogVisible = true;
   }
   saveSelectedDays() {
-    // Handle the selected days logic here
-    console.log('Selected Days:', this.selectedDays);
-    this.daysDialogVisible = false;
+    if (this.selectedOrder) {
+      const postponeOrder: PostponeOrder = { OrderId: this.selectedOrder.Id, PostponedDays: this.selectedDays };
+      this.orderService.postponeOrder(postponeOrder).subscribe(() => {
+        this.refreshOrders(); // Refresh orders
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Order postponed successfully' });
+      }, (error) => {
+        console.error('Error postponing order:', error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to postpone order' });
+      });
+      this.daysDialogVisible = false;
+    }
   }
   
 
