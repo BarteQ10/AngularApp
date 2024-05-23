@@ -14,11 +14,12 @@ import { CardModule } from 'primeng/card';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { MessageService } from 'primeng/api';
+import { FlexLayoutModule } from '@angular/flex-layout';
 @Component({
   selector: 'app-orders',
   standalone: true,
   imports: [TableModule, CommonModule, ButtonModule, CheckboxModule,
-    MultiSelectModule, FormsModule, CardModule, DialogModule, DropdownModule],
+    MultiSelectModule, FormsModule, CardModule, DialogModule, DropdownModule, FlexLayoutModule],
   providers: [DialogService],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.css'

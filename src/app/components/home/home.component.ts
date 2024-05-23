@@ -25,25 +25,25 @@ export class HomeComponent implements OnInit {
   }
   ngOnInit(): void {
     const userRole = this.authService.getUserRole();
-    if (userRole === '!Client') {
+    if (userRole === 'Client') {
       this.isAdmin = false;
       this.cardItems = [
         // Client menu items
-        { title: 'Orders', description: 'Opis Kategorii 1', icon: 'pi pi-fw pi-home', route: '/orders' },
-        { title: 'Favourite MSBox', description: 'Opis Kategorii 2', icon: 'pi pi-user', route: '/favouriteMSBox' },
-        { title: 'Change User Data', description: 'Opis Kategorii 3', icon: 'pi pi-cog', route: '/changeUserData' },
-        { title: 'Send Parcel ', description: 'Opis Kategorii 4', icon: 'pi pi-chart-bar', route: '/sendParcel' },
-        { title: 'Suspend Account', description: 'Opis Kategorii 6', icon: 'pi pi-globe', route: '/suspendAccount' }
+        { title: 'Orders', description: 'Opis Kategorii ', icon: 'pi pi-fw pi-home', route: '/orders' },
+        { title: 'Favourite MSBox', description: 'Opis Kategorii ', icon: 'pi pi-user', route: '/favouriteMSBox' },
+        { title: 'Change User Data', description: 'Opis Kategorii ', icon: 'pi pi-cog', route: '/changeUserData' },
+        { title: 'Send Parcel ', description: 'Opis Kategorii ', icon: 'pi pi-chart-bar', route: '/sendParcel' },
+        { title: 'Suspend Account', description: 'Opis Kategorii ', icon: 'pi pi-globe', route: '/suspendAccount' }
       ];
-    } else if (userRole !== 'Admin') {
+    } else if (userRole === 'Admin') {
       this.isAdmin = true;
       this.cardItems = [
         // Admin menu items
-        { title: 'Orders', description: 'Opis Kategorii 4', icon: 'pi pi-chart-bar', route: '/ordersAdmin' },
-        { title: 'Machines', description: 'Opis Kategorii 5', icon: 'pi pi-file-text', route: '/machinesAdmin' },
-        { title: 'Users', description: 'Opis Kategorii 5', icon: 'pi pi-file-text', route: '/usersAdmin' },
-        { title: 'Change User Data', description: 'Opis Kategorii 3', icon: 'pi pi-cog', route: '/changeUserData' },
-        { title: 'Suspend Account', description: 'Opis Kategorii 6', icon: 'pi pi-globe', route: '/suspendAccount' }
+        { title: 'Orders', description: 'Opis Kategorii ', icon: 'pi pi-chart-bar', route: '/ordersAdmin' },
+        { title: 'Machines', description: 'Opis Kategorii ', icon: 'pi pi-file-text', route: '/machinesAdmin' },
+        { title: 'Users', description: 'Opis Kategorii ', icon: 'pi pi-file-text', route: '/usersAdmin' },
+        { title: 'Change User Data', description: 'Opis Kategorii ', icon: 'pi pi-cog', route: '/changeUserData' },
+        { title: 'Suspend Account', description: 'Opis Kategorii ', icon: 'pi pi-globe', route: '/suspendAccount' }
       ];
     } else {
       // Handle unknown or unauthorized roles
