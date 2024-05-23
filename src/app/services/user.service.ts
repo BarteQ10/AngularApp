@@ -31,6 +31,21 @@ export class UserService {
     return this.http.put(`${this.baseUrl}/edit-user/${userData.Id}/`, userData, { headers });
   }
 
+  deactivateUser(userId: number): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.getAuthToken()}` // Dodaj token autoryzacyjny
+    });
+    return this.http.put<any>(`${this.baseUrl}/disable-user/`, { Id: userId }, { headers });
+  }
+
+  activateUser(userId: number): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.getAuthToken()}` // Dodaj token autoryzacyjny
+    });
+    return this.http.put<any>(`${this.baseUrl}/enable-user/`, { Id: userId }, { headers });
+  }
   // Pobierz token autoryzacyjny z sesji
   private getAuthToken(): string {
     return sessionStorage.getItem('jwt_token') || ''; // Sprawdź, czy token istnieje w sesji

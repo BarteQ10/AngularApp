@@ -22,7 +22,7 @@
                     [rounded]="true" 
                     [severity]="user.Active ? 'danger' : 'success'" 
                     [label]="user.Active ? 'Deactivate' : 'Activate'"
-                    (click)={}>
+                    (click)="toggleActivation(user)">
                 </p-button>
             </td> 
         </tr>

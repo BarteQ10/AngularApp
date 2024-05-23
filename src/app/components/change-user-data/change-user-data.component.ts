@@ -28,6 +28,7 @@ export class ChangeUserDataComponent implements OnInit {
     private userService: UserService,
     private messageService: MessageService,
     private authService: AuthService,
+    @Optional() private ref: DynamicDialogRef,
     @Optional() private config: DynamicDialogConfig
   ) {
     this.userDataForm = this.fb.group({
@@ -42,7 +43,8 @@ export class ChangeUserDataComponent implements OnInit {
       Phone: [null, Validators.required],
       Mail: [null],
       Active: [null],
-      Country: [null]
+      Country: [null],
+      Id: [null]
     });
   }
 
@@ -53,7 +55,6 @@ export class ChangeUserDataComponent implements OnInit {
     if (this.config && this.config.data && this.config.data.userId) {
       userId = this.config.data.userId;
     }
-
     if (!userId) {
       userId = this.authService.getUserId(sessionStorage.getItem('jwt_token') || '');
     }
@@ -72,11 +73,12 @@ export class ChangeUserDataComponent implements OnInit {
   submitDetails() {
     if (this.userDataForm.valid) {
       const userData = this.userDataForm.value;
-
       this.userService.updateUserData(userData).subscribe(
         () => {
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'User data updated successfully' });
-          // Opcjonalnie przekieruj gdziekolwiek po aktualizacji danych użytkownika
+          if (this.ref) {
+            this.ref.close(); // Close the modal if opened from a modal dialog
+          }
         },
         (error) => {
           console.error(error);
@@ -84,7 +86,7 @@ export class ChangeUserDataComponent implements OnInit {
         }
       );
     } else {
-      // Obsłuż formularz nieprawidłowy
+      // Handle invalid form
     }
   }
   open(user: User): void {
