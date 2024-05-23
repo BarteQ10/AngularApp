@@ -1,9 +1,5 @@
 
-@media (max-width: 768px) {
-p-table {
-    flex-basis: 100%; /* Tabela zajmuje całą szerokość na mniejszych ekranach */
-}
-}
+
   p-table {
     padding: 20px;
     display: flex;
@@ -11,4 +7,44 @@ p-table {
   }
 td {
     flex-grow: 1; /* Kolumny będą rozciągać się równomiernie */
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Dodaj odstęp między kartami */
+}
+
+.p-card {
+  cursor: pointer; /* Kursor zmienia się na wskaźnik podczas najechania */
+}
+
+.spacer {
+  margin-right: 15px; /* Możesz dostosować wielkość odstępu według potrzeb */
+}
+.payment-button {
+  border-radius: 5px; /* Ustawienie brak zaokrąglenia krawędzi */
+  flex-grow: 1;
+}
+.active {
+  background-color: #007bff; /* Dostosuj kolor tła według preferencji */
+  color: #ffffff; /* Dostosuj kolor tekstu według preferencji */
+}
+.submit-button {
+  margin-top: 20px;
+}
+.back-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  border: none;
+  background-color: #ccc;
+  color: #000;
+  cursor: pointer;
 }

@@ -10,22 +10,32 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { QrCodeModalComponent } from '../qr-code-modal/qr-code-modal.component';
 import { DialogService } from 'primeng/dynamicdialog';
+import { CardModule } from 'primeng/card';
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [TableModule, CommonModule, ButtonModule, CheckboxModule, MultiSelectModule, FormsModule],
+  imports: [TableModule, CommonModule, ButtonModule, CheckboxModule,
+    MultiSelectModule, FormsModule, CardModule, DialogModule, DropdownModule],
   providers: [DialogService],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.css'
 })
 export class OrdersComponent implements OnInit {
 
-  orders: Order[] = []; 
+  orders: Order[] = [];
   columnOptions: any[]; // Opcje kolumn
   selectedColumns: any[]; // Wybrane kolumny
   editButtonLabel: string = "Edit"; // Default label
   senderEmail: string | null = sessionStorage.getItem("email");
   showEditButton: boolean = true;
+  openButtonVisible: boolean = false;
+  buttonSeverity: string = "";
+  daysDialogVisible: boolean = false;
+  selectedDays: number = 1;
+  selectedOption: string | null = null;
+  daysOptions: any[] = Array.from({ length: 7 }, (_, i) => ({ label: `${i + 1} days`, value: i + 1 }));
   constructor(private orderService: OrderService, private dialogService: DialogService) {
     this.columnOptions = [
       { label: 'Status Name', field: 'StatusName', header: 'Status Name' },
@@ -42,20 +52,23 @@ export class OrdersComponent implements OnInit {
       { label: 'Postponed Days', field: 'PostponedDays', header: 'Postponed Days' },
       { label: 'Is Return', field: 'IsReturn', header: 'Is Return' },
       { label: 'Delivery Cost', field: 'DeliveryCost', header: 'Delivery Cost' }
-  ];
+    ];
 
-  let storedColumns = localStorage.getItem('selectedColumns');
+    let storedColumns = localStorage.getItem('selectedColumns');
     if (!storedColumns) {
-        storedColumns = JSON.stringify(this.columnOptions.slice(0, 5).map(option => option)); // Ustaw pierwsze pięć kolumn
-        localStorage.setItem('selectedColumns', storedColumns);
+      storedColumns = JSON.stringify(this.columnOptions.slice(0, 5).map(option => option)); // Ustaw pierwsze pięć kolumn
+      localStorage.setItem('selectedColumns', storedColumns);
     }
 
     this.selectedColumns = JSON.parse(storedColumns);
-   } 
+  }
   ngOnInit(): void {
+    this.getOrders();
+  }
+  getOrders() {
     this.orderService.getAllOrdersForUser().subscribe(
       (orders: Order[]) => {
-        this.orders = orders; 
+        this.orders = orders;
       },
       (error) => {
         console.error('Błąd podczas pobierania zamówień:', error);
@@ -65,25 +78,6 @@ export class OrdersComponent implements OnInit {
   onColumnToggle(event: any): void {
     this.selectedColumns = event.value;
     localStorage.setItem('selectedColumns', JSON.stringify(this.selectedColumns));
-}
-  updateButtonLabel(order: Order): void {
-    console.log(this.senderEmail)
-    //Paczka odebrana przez kuriera z paczkomatu.
-    //Paczka dostarczona do sortowni.
-    //Paczka odebrana przez kuriera.
-    //Paczka gotowa do odbioru.
-    //Rozpoczęcie zwrotu paczki.
-    //Paczka zwrotna gotowa do odbioru.
-    if (order['SenderMail'] === this.senderEmail) {
-      this.editButtonLabel = "Different Label"; // Set different label
-    } else {
-      
-      if(order['StatusName'] === "Paczka gotowa do odbioru."){
-        this.editButtonLabel = "Open chamber";
-      }else{
-        this.editButtonLabel = ""; // Set default label
-      }
-    }
   }
   showEditButtonCondition(order: Order): boolean {
     // Define your condition here, for example, only show the button if SenderMail matches the session email
@@ -92,16 +86,80 @@ export class OrdersComponent implements OnInit {
   }
   openQrCodeModal(order: Order): void {
     const ref = this.dialogService.open(QrCodeModalComponent, {
-      header: 'QR Code', // Nagłówek modala
-      width: '70%', // Szerokość modala
+      header: 'QR Code',
       contentStyle: { 'max-height': '500px', 'overflow': 'auto' }, // Styl zawartości modala
-      data: { orderData: ""+order.ChamberId } // Dane przekazywane do komponentu modalnego
+      data: { orderData: "" + order.ChamberId } // Dane przekazywane do komponentu modalnego
     });
     console.log(order.ChamberId)
-  
+
     // Obsługa zdarzenia zamknięcia modala
     ref.onClose.subscribe(() => {
       // Tutaj możesz dodać kod, który zostanie wykonany po zamknięciu modala
     });
+  }
+  openPostponeOrderModal(order: Order): void {
+    this.daysDialogVisible = true;
+  }
+  saveSelectedDays() {
+    // Handle the selected days logic here
+    console.log('Selected Days:', this.selectedDays);
+    this.daysDialogVisible = false;
+  }
+  
+
+  selectOption(option: string) {
+    this.selectedOption = option;
+    this.openButtonVisible = false;
+    // Apply filtering based on selected option
+    if (option === 'send') {
+      this.orders = this.orders.filter(order => order.SenderMail === this.senderEmail).filter(order => order.IsReturn === false);
+    } else if (option === 'receive') {
+      this.orders = this.orders.filter(order => order.ReceiverMail === this.senderEmail).filter(order => order.IsReturn === false);
+    } else if (option === 'returns') {
+      this.orders = this.orders.filter(order => order.IsReturn === true);
+    }
+  }
+  updateButtonLabel(order: Order): void {
+    this.openButtonVisible = false;
+    if (this.selectedOption === 'send') {
+      if (order.StatusName === "Paczka czeka na umieszczenie w automacie nadawczym.") {
+        this.editButtonLabel = "Open chamber";
+        this.openButtonVisible = true;
+        this.buttonSeverity = "success";
+      }
+    }
+    else if (this.selectedOption === 'receive') {
+      if (order.StatusName === "Paczka gotowa do odbioru.") {
+        this.editButtonLabel = "Open chamber";
+        this.buttonSeverity = "success";
+        this.openButtonVisible = true;
+      } else if (order.StatusName === "Paczka czeka na umieszczenie w automacie nadawczym." ||
+        order.StatusName === "Paczka została umieszczona w automacie nadawczym." ||
+        order.StatusName === "Paczka odebrana przez kuriera." ||
+        order.StatusName === "Paczka dotarła do sortowni.") {
+          this.editButtonLabel = "Postpone order";
+          this.openButtonVisible = true;
+          this.buttonSeverity = "secondary";
+      }
+    }
+    else if (this.selectedOption === 'returns') {
+      if (order.StatusName === "Paczka zwrotna gotowa do odbioru.") {
+        this.editButtonLabel = "Open chamber";
+        this.openButtonVisible = true;
+        this.buttonSeverity = "success";
+      }
+    }
+  }
+
+  handleButtonClick(order: Order): void {
+    if (this.editButtonLabel === 'Postpone order') {
+      this.openPostponeOrderModal(order);
+    } else {
+      this.openQrCodeModal(order);
+    }
+  }
+  clearSelectedOption() {
+    this.selectedOption = null;
+    this.getOrders();
   }
 }
