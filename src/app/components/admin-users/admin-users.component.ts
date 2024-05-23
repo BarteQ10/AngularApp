@@ -22,24 +22,39 @@ import { DialogService } from 'primeng/dynamicdialog';
 export class AdminUsersComponent implements OnInit {
   @ViewChild(ChangeUserDataComponent) changeUserDataModal!: ChangeUserDataComponent;
   users: User[] = [];
-  columnOptions: any[]; // Opcje kolumn
-  selectedColumns: any[]; // Wybrane kolumny
+  columnOptions: any[]; 
+  selectedColumns: any[]; 
   constructor(private userService: UserService, private dialogService: DialogService) {
     this.columnOptions = [
       { label: 'Id', field: 'Id', header: 'Id' },
       { label: 'Mail', field: 'Mail', header: 'Mail' },
-      { label: 'Password', field: 'Password', header: 'Password' },
-      { label: 'Active', field: 'Active', header: 'Active' }
     ];
 
     let storedColumns = localStorage.getItem('selectedColumnsAdminUsers');
     if (!storedColumns) {
-      storedColumns = JSON.stringify(this.columnOptions.slice(0, 5).map(option => option)); // Ustaw pierwsze pięć kolumn
+      storedColumns = JSON.stringify(this.columnOptions.slice(0, 5).map(option => option)); 
       localStorage.setItem('selectedColumnsAdminUsers', storedColumns);
     }
 
     this.selectedColumns = JSON.parse(storedColumns);
   }
+  toggleActivation(user: any) {
+    if (user.Active) {
+        this.userService.deactivateUser(user.Id).subscribe(response => {
+          const index = this.users.findIndex((u) => u.Id === user.Id);
+          if (index !== -1) {
+              this.users[index].Active = false; 
+          }
+        });
+    } else {
+        this.userService.activateUser(user.Id).subscribe(response => {
+          const index = this.users.findIndex((u) => u.Id === user.Id);
+          if (index !== -1) {
+              this.users[index].Active = true; 
+          }
+        });
+    }
+}
   ngOnInit(): void {
     this.userService.getAllUsers().subscribe(
       (orders: User[]) => {
@@ -56,7 +71,6 @@ export class AdminUsersComponent implements OnInit {
   }
   openModal(user: User): void {
     const ref = this.dialogService.open(ChangeUserDataComponent, {
-      header: 'Change User Data',
       width: '70%',
       contentStyle: { "max-height": "500px", "overflow": "auto" },
       data: {
