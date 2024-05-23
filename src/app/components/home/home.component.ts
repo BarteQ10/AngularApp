@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit {
   }
   ngOnInit(): void {
     const userRole = this.authService.getUserRole();
-    if (userRole === 'Client') {
+    if (userRole === '!Client') {
       this.isAdmin = false;
       this.cardItems = [
         // Client menu items
@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit {
         { title: 'Send Parcel ', description: 'Opis Kategorii 4', icon: 'pi pi-chart-bar', route: '/sendParcel' },
         { title: 'Suspend Account', description: 'Opis Kategorii 6', icon: 'pi pi-globe', route: '/suspendAccount' }
       ];
-    } else if (userRole === 'Admin') {
+    } else if (userRole !== 'Admin') {
       this.isAdmin = true;
       this.cardItems = [
         // Admin menu items

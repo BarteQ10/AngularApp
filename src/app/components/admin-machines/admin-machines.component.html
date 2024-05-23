@@ -10,12 +10,33 @@
             <th>Action</th>
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-order>
+    <ng-template pTemplate="body" let-machine>
         <tr>
-            <td *ngFor="let col of selectedColumns">{{order[col.field]}}</td>
+            <td *ngFor="let col of selectedColumns">{{machine[col.field]}}</td>
             <td>
-                <p-button icon="pi pi-check" [rounded]="true" severity="warning" label="Edit"></p-button>
+                <p-button icon="pi pi-pencil" [rounded]="true" severity="info" label="Edit" (onClick)="showEditModal(machine)"></p-button>
             </td>
         </tr>
     </ng-template>
 </p-table>
+
+<p-dialog header="Edit Machine" [(visible)]="displayEditModal" [modal]="true" [closable]="false" [style]="{width: '30vw'}">
+    <div class="p-fluid">
+        <div class="p-field">
+            <label for="address">Address</label>
+            <input id="address" type="text" pInputText [(ngModel)]="selectedMachine.Address"/>
+        </div>
+        <div class="p-field">
+            <label for="postalCode">Postal Code</label>
+            <input id="postalCode" type="text" pInputText [(ngModel)]="selectedMachine.PostalCode"/>
+        </div>
+        <div class="p-field">
+            <label for="location">Location</label>
+            <input id="location" type="text" pInputText [(ngModel)]="selectedMachine.Location"/>
+        </div>
+    </div>
+    <p-footer>
+        <p-button type="button" label="Save" severity="success" icon="pi pi-check" (click)="saveMachine()"></p-button>
+        <p-button type="button" label="Cancel" severity="danger" icon="pi pi-times" (click)="displayEditModal = false"></p-button>
+    </p-footer>
+</p-dialog>

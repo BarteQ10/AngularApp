@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { Order } from '../interfaces/order';
+import { Order, PostponeOrder } from '../interfaces/order';
 import { AuthService } from './auth.service';
 @Injectable({
   providedIn: 'root'
@@ -39,6 +39,14 @@ export class OrderService {
     return this.http.get<Order>(`${this.baseUrl}/${id}`);
   }
 
+  postponeOrder(postponeOrder: PostponeOrder): Observable<any>{
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.getAuthToken()}` // Dodaj token autoryzacyjny
+    });
+    return this.http.put<any>(`${this.baseUrl}/postpone-order/`, postponeOrder, { headers });
+  }
+  
   createOrder(orderData: any): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',

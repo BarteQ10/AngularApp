@@ -19,3 +19,8 @@ export interface Order {
   IsReturn: boolean;
   DeliveryCost: number;
 }
+
+export interface PostponeOrder {
+  OrderId: number;
+  PostponedDays: number;
+}
