@@ -1,22 +1,66 @@
-<div style="padding-left: 20px;">
-    <label for="selectedColumns">Wybierz pola do wyświetlenia:</label>
-    <p-multiSelect id="selectedColumns" [options]="columnOptions" [(ngModel)]="selectedColumns" (onChange)="onColumnToggle($event)"></p-multiSelect>
+<div *ngIf="!selectedOption" style="margin-top: 20px; display: flex; justify-content: center;">
+    <div class="card-container">
+        <p-card [style]="{width:'300px', margin: '10px'}" [header]="'Send'" (click)="selectOption('send')">
+            <h5>Nadania</h5>
+        </p-card>
+        <p-card [style]="{width:'300px', margin: '10px'}" [header]="'Receive'" (click)="selectOption('receive')">
+            <h5>Odbiory</h5>
+        </p-card>
+        <p-card [style]="{width:'300px', margin: '10px'}" [header]="'Send / Returns'" (click)="selectOption('returns')">
+            <h5>Zwroty</h5>
+        </p-card>
+    </div>
 </div>
 
-<p-table [value]="orders" [resizableColumns]="true" [scrollable]="true" scrollHeight="83vh" class="centerItems" [style]="{'min-width': '40rem'}">
-    <ng-template pTemplate="header">
-        <tr>
-            <th *ngFor="let col of selectedColumns">{{col.header}}</th>
-            <th>Action</th>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-order>
-        <tr>
-            <td *ngFor="let col of selectedColumns">{{order[col.field]}}</td>
-            <td>
-                {{ updateButtonLabel(order) }}
-                <p-button *ngIf="showEditButtonCondition(order)" icon="pi pi-check" [rounded]="true" severity="warning" [label]="editButtonLabel" (click)="openQrCodeModal(order)"></p-button>
-            </td>
-        </tr>
-    </ng-template>
-</p-table>
+<div *ngIf="selectedOption" style="position: relative;">
+    <button class="back-button" (click)="clearSelectedOption()">Back</button>
+    <div style="padding-left: 20px;">
+        <label for="selectedColumns">Select columns to display:</label>
+        <p-multiSelect id="selectedColumns" [options]="columnOptions" [(ngModel)]="selectedColumns" (onChange)="onColumnToggle($event)"></p-multiSelect>
+    </div>
+
+    <p-table [value]="orders" [resizableColumns]="true" [scrollable]="true" scrollHeight="83vh" class="centerItems" [style]="{'min-width': '40rem'}">
+        <!-- Table headers -->
+        <ng-template pTemplate="header">
+            <tr>
+                <th *ngFor="let col of selectedColumns">{{col.header}}</th>
+                <th>Action</th>
+            </tr>
+        </ng-template>
+
+        <!-- Table body -->
+        <ng-template pTemplate="body" let-order>
+            <tr>
+                <td *ngFor="let col of selectedColumns">{{order[col.field]}}</td>
+                <td>
+                    {{ updateButtonLabel(order) }}
+                    <p-button *ngIf="showEditButtonCondition(order) && openButtonVisible" icon="pi pi-check" [rounded]="true" [severity]="buttonSeverity" [label]="editButtonLabel" (click)="handleButtonClick(order)"></p-button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <p-dialog 
+    header="Select Days" 
+    [modal]="true" 
+    [(visible)]="daysDialogVisible" 
+    [style]="{ width: '20rem' }"
+    [styleClass]="'custom-dialog'">
+    <div class="flex align-items-center gap-3 mb-5">
+        <label for="days" class="font-semibold w-6rem">
+            Days
+        </label>
+        <p-dropdown 
+            id="days" 
+            [options]="daysOptions" 
+            [(ngModel)]="selectedDays" 
+            [style]="{width: '100%'}"
+            [appendTo]="'body'"
+            placeholder="Select days">
+        </p-dropdown>
+    </div>
+    <div class="flex justify-content-end gap-2">
+        <p-button label="Cancel" severity="secondary" (click)="daysDialogVisible = false" />
+        <p-button label="Save" (click)="saveSelectedDays()" />
+    </div>
+</p-dialog>
+</div>
