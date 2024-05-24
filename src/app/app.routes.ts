@@ -13,6 +13,7 @@ import { ParcelReturnsComponent } from './components/parcel-returns/parcel-retur
 import { AdminMachinesComponent } from './components/admin-machines/admin-machines.component';
 import { AdminOrdersComponent } from './components/admin-orders/admin-orders.component';
 import { AdminUsersComponent } from './components/admin-users/admin-users.component';
+import { ReportComponent } from './components/report/report.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/home', pathMatch:'full' },
@@ -29,6 +30,7 @@ export const routes: Routes = [
     { path: 'favouriteMSBox', component: FavouriteMSBOXComponent, canActivate: [authGuard] },
     { path: 'changeUserData', component: ChangeUserDataComponent, canActivate: [authGuard] },
     { path: 'sendParcel', component: SendParcelComponent, canActivate: [authGuard] },
+    { path: 'report', component: ReportComponent, canActivate: [authGuard] },
     { path: 'yourReturns', component: ParcelReturnsComponent, canActivate: [authGuard] },
     { path: 'home', component: HomeComponent, canActivate: [authGuard] },
 ];
