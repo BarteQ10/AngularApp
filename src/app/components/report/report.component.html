@@ -31,8 +31,8 @@
                     <p-button label="Vertical" severity="primary" (click)="assignMachineTo(item.Id,3)"></p-button>
                 </td>
                 <td style="text-align: center;">
-                    <p-button label="Mobile Machine" severity="danger" (click)="{}"></p-button>
-                    <p-button label="Vertical" severity="danger" (click)="{}"></p-button>
+                    <p-button label="Mobile Machine" severity="danger" (click)="unAssignMachineFrom(item.Id,2)"></p-button>
+                    <p-button label="Vertical" severity="danger" (click)="unAssignMachineFrom(item.Id,3)"></p-button>
                 </td>
             </tr>
         </ng-template>

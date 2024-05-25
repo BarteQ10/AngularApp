@@ -66,6 +66,17 @@ export class ReportComponent implements OnInit {
       }
   );
   }
+  unAssignMachineFrom(machine_id:number, id_machine_type:number):void{
+    this.machineService.unAssignMachineFrom(machine_id, id_machine_type).subscribe(
+      (response) => {
+          this.messageService.add({severity:'success', summary:'Success', detail:'Machine unassigned successfully.'});
+          this.loadReportData();
+      },
+      (error) => {
+          this.messageService.add({severity:'error', summary:'Error', detail:'Failed to unassign machine.'});
+      }
+  );
+  }
   getColumns(): string[] {
     if (this.reportData.length > 0) {
       const allColumns = Object.keys(this.reportData[0]);

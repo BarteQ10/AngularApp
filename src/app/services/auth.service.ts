@@ -2,11 +2,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Login, Register, User } from '../interfaces/auth';
 import { Observable } from 'rxjs';
+import { ApiConfig } from '../../config/api-config';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'http://127.0.0.1:8000'
+  private baseUrl = ApiConfig.apiUrl;
   constructor(private http: HttpClient) { }
   userRole: string = '';
   registerUser(registerData: Register): Observable<any> {

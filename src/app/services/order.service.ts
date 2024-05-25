@@ -3,12 +3,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Order, PostponeOrder } from '../interfaces/order';
 import { AuthService } from './auth.service';
+import { ApiConfig } from '../../config/api-config';
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
 
-  private baseUrl = 'http://127.0.0.1:8000'
+  private baseUrl = ApiConfig.apiUrl;
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
