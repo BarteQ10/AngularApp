@@ -19,7 +19,7 @@ export class FavouriteService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${sessionStorage.getItem('jwt_token') || ''}` // Dodaj token autoryzacyjny
     });
-    const url = `${this.apiUrl}add-favourite-machine/${userId}/${machineId}/`;
+    const url = `${this.apiUrl}/add-favourite-machine/${userId}/${machineId}/`;
     return this.http.post(url,null, { headers });
   }
 
@@ -29,7 +29,7 @@ export class FavouriteService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${sessionStorage.getItem('jwt_token') || ''}` // Dodaj token autoryzacyjny
     });
-    const url = `${this.apiUrl}remove-favourite-machine/${userId}/${machineId}/`;
+    const url = `${this.apiUrl}/remove-favourite-machine/${userId}/${machineId}/`;
     return this.http.post(url,null, { headers });
   }
 }
