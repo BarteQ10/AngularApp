@@ -31,7 +31,6 @@ export class MachineService {
     const headers = this.createHeaders();
     return this.http.get<MachineFillStatusResponse[]>(`${this.baseUrl}/get-machine-fill-status/`, {headers});
   }
-
   assignMachineTo(machine_id:number, id_machine_type:number): Observable<any>{
     const headers = this.createHeaders();
     return this.http.post(`${this.baseUrl}/assign-machine/`, {machine_id:machine_id, id_machine_type:id_machine_type}, {headers});

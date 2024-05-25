@@ -1,9 +1,14 @@
 <div style="padding-left: 20px;">
-    <label for="selectedColumns">Wybierz pola do wyświetlenia:</label>
+    <label for="selectedColumns">Select fields to show:</label>
     <p-multiSelect id="selectedColumns" [options]="columnOptions" [(ngModel)]="selectedColumns" (onChange)="onColumnToggle($event)"></p-multiSelect>
 </div>
-
-<p-table [value]="orders" [resizableColumns]="true" [scrollable]="true" scrollHeight="83vh" class="centerItems" [style]="{'min-width': '40rem'}">
+<div style="padding-left: 20px;">
+    <label for="dateRange">Select Date Range:</label>
+    <p-calendar id="dateRange" selectionMode="range" [(ngModel)]="selectedDateRange" (ngModelChange)="filterOrdersByDate()"></p-calendar>
+</div>
+<p-button label="Export to PDF" icon="pi pi-file-pdf" (click)="exportToPDF()"></p-button>
+<p-table [value]="filteredOrders" [resizableColumns]="true" [scrollable]="true" 
+scrollHeight="83vh" class="centerItems" [style]="{'min-width': '40rem'}" >
     <ng-template pTemplate="header">
         <tr>
             <th *ngFor="let col of selectedColumns">{{col.header}}</th>

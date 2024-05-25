@@ -1,5 +1,9 @@
 <div style="position: relative;">
-    <p-table [value]="reportData" [resizableColumns]="true" [scrollable]="true" scrollHeight="83vh" class="centerItems" [style]="{'min-width': '40rem'}">
+    <p-button (click)="toggleView()">
+        <span *ngIf="showTable; else showChart">Show Chart <i class="pi pi-eye"></i></span>
+        <ng-template #showChart>Show Table <i class="pi pi-eye"></i></ng-template>
+    </p-button>
+    <p-table *ngIf="showTable" [value]="reportData" [resizableColumns]="true" [scrollable]="true" scrollHeight="75vh" class="centerItems" [style]="{'min-width': '40rem'}">
         <ng-template pTemplate="header">
             <tr>
                 <ng-container *ngFor="let col of getColumns(); let i=index">
@@ -34,3 +38,4 @@
         </ng-template>
     </p-table>
 </div>
+    <p-chart *ngIf="!showTable" type="bar" [data]="chartData" [options]="options" height="550"/>
