@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit {
         { title: 'Send Parcel ', description: 'Opis Kategorii ', icon: 'pi pi-chart-bar', route: '/sendParcel' },
         { title: 'Suspend Account', description: 'Opis Kategorii ', icon: 'pi pi-globe', route: '/suspendAccount' }
       ];
-    } else if (userRole === 'Admin') {
+    } else if (userRole === 'Administrator') {
       this.isAdmin = true;
       this.cardItems = [
         // Admin menu items
