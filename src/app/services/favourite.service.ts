@@ -2,13 +2,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
+import { ApiConfig } from '../../config/api-config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FavouriteService {
 
-  private apiUrl = 'http://127.0.0.1:8000/';
+  private apiUrl = ApiConfig.apiUrl;
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 

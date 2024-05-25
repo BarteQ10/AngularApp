@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import { PaymentMethod, SizeAndPrice } from '../interfaces/payment';
+import { ApiConfig } from '../../config/api-config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PaymentService {
-  private baseUrl = 'http://127.0.0.1:8000'; // Bazowy adres API
+  private baseUrl = ApiConfig.apiUrl;
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 

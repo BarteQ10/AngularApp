@@ -3,11 +3,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../interfaces/auth';
 import { AuthService } from './auth.service';
+import { ApiConfig } from '../../config/api-config';
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private baseUrl = 'http://127.0.0.1:8000'; // Bazowy adres API
+  private baseUrl = ApiConfig.apiUrl;
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 

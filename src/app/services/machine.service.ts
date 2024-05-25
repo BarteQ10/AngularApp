@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
 import { ChamberData, Machine, MachineFillStatusResponse } from '../interfaces/machine';
+import { ApiConfig } from '../../config/api-config'
 
 @Injectable({
   providedIn: 'root'
 })
 export class MachineService {
-  private baseUrl = 'http://127.0.0.1:8000'
+  private baseUrl = ApiConfig.apiUrl;
   constructor(private http: HttpClient, private authService: AuthService) { }
 
 
@@ -35,7 +36,10 @@ export class MachineService {
     const headers = this.createHeaders();
     return this.http.post(`${this.baseUrl}/assign-machine/`, {machine_id:machine_id, id_machine_type:id_machine_type}, {headers});
   }
-
+  unAssignMachineFrom(machine_id:number, id_machine_type:number): Observable<any>{
+    const headers = this.createHeaders();
+    return this.http.post(`${this.baseUrl}/unassign-machine/`, {machine_id:machine_id, id_machine_type:id_machine_type}, {headers});
+  }
   private createHeaders(): HttpHeaders {
     return new HttpHeaders({
       'Content-Type': 'application/json',
