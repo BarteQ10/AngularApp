@@ -1,0 +1,18 @@
+p-table {
+    padding: 20px;
+    display: flex;
+    flex-basis: 80%; /* Minimalna szerokość tabeli */
+  }
+td {
+    flex-grow: 1; /* Kolumny będą rozciągać się równomiernie */
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+}
+.dark-button {
+    background-color: #8b0000; /* Dark red color */
+    color: #ffffff; /* White text color */
+    /* Add any additional styles as needed */
+}

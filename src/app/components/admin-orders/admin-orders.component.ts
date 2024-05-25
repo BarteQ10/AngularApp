@@ -9,11 +9,16 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { FormsModule } from '@angular/forms';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ModifyOrderModalComponent } from '../modify-order-modal/modify-order-modal.component';
+import { CalendarModule } from 'primeng/calendar';
+
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-admin-orders',
   standalone: true,
-  imports: [TableModule, CommonModule, ButtonModule, CheckboxModule, MultiSelectModule, FormsModule],
+  imports: [TableModule, CommonModule, ButtonModule, CheckboxModule, 
+    MultiSelectModule, FormsModule, CalendarModule],
   templateUrl: './admin-orders.component.html',
   styleUrl: './admin-orders.component.css',
   providers:[DialogService]
@@ -21,8 +26,10 @@ import { ModifyOrderModalComponent } from '../modify-order-modal/modify-order-mo
 export class AdminOrdersComponent implements OnInit {
 
   orders: Order[] = []; 
+  filteredOrders: Order[] = [];
   columnOptions: any[]; 
   selectedColumns: any[]; 
+  selectedDateRange!: Date;
   constructor(private orderService: OrderService,private dialogService: DialogService) {
     this.columnOptions = [
       { label: 'Id', field: 'Id', header: 'Id' },
@@ -64,12 +71,26 @@ getOrders() {
   this.orderService.getAllOrders().subscribe(
     (orders: Order[]) => {
       this.orders = orders; 
+      this.filteredOrders = [...orders];
+      this.filterOrdersByDate();
     },
     (error) => {
       console.error('Error fetching orders:', error);
     }
   );
 }
+
+filterOrdersByDate() {
+  if (Array.isArray(this.selectedDateRange) && this.selectedDateRange.length >= 2) {
+    const [startDate, endDate] = this.selectedDateRange;
+    this.filteredOrders = this.orders.filter(order =>
+      new Date(order.StartDate) >= startDate && new Date(order.StartDate) <= endDate
+    );
+  } else {
+    this.filteredOrders = [...this.orders];
+  }
+}
+
 openModal(order: Order) {
   const ref = this.dialogService.open(ModifyOrderModalComponent, {
     header: 'Edit Order',
@@ -79,6 +100,56 @@ openModal(order: Order) {
   });
   ref.onClose.subscribe((updatedOrder: Order) => {
     this.getOrders();
+  });
+}
+exportToPDF() {
+  const doc = new jsPDF(); // Create a new jsPDF object
+  const columns = this.selectedColumns.map(col => col.header);
+  const data = this.filteredOrders.map(order => 
+    this.selectedColumns.map(col => 
+      this.removePolishSigns(order[col.field as keyof Order])
+    )
+  );
+
+  autoTable(doc,{
+    head: [columns],
+    body: data,
+    didParseCell: function(data) {
+      data.cell.styles.font = "times"; // Set font type to Times New Roman
+    },
+    horizontalPageBreak: true,
+  });
+
+  doc.save('orders.pdf');
+}
+
+removePolishSigns(text:any) {
+  if (typeof text !== 'string') {
+    return text; // If text is not a string, return an empty string
+  }
+  // Replace Polish signs with their non-accented counterparts
+  return text.replace(/[ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]/g, function(match) {
+    switch(match) {
+      case 'ą': return 'a';
+      case 'ć': return 'c';
+      case 'ę': return 'e';
+      case 'ł': return 'l';
+      case 'ń': return 'n';
+      case 'ó': return 'o';
+      case 'ś': return 's';
+      case 'ź': return 'z';
+      case 'ż': return 'z';
+      case 'Ą': return 'A';
+      case 'Ć': return 'C';
+      case 'Ę': return 'E';
+      case 'Ł': return 'L';
+      case 'Ń': return 'N';
+      case 'Ó': return 'O';
+      case 'Ś': return 'S';
+      case 'Ź': return 'Z';
+      case 'Ż': return 'Z';
+      default: return match; // Return original character if not found in switch case
+    }
   });
 }
 }

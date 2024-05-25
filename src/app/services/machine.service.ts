@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
-import { Machine } from '../interfaces/machine';
+import { ChamberData, Machine, MachineFillStatusResponse } from '../interfaces/machine';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +26,16 @@ export class MachineService {
     const headers = this.createHeaders();
     return this.http.post(`${this.baseUrl}/update-machine/`, machine, {headers});
   }
+
+  getMachineFillStatus(): Observable<MachineFillStatusResponse[]> {
+    const headers = this.createHeaders();
+    return this.http.get<MachineFillStatusResponse[]>(`${this.baseUrl}/get-machine-fill-status/`, {headers});
+  }
+  assignMachineTo(machine_id:number, id_machine_type:number): Observable<any>{
+    const headers = this.createHeaders();
+    return this.http.post(`${this.baseUrl}/assign-machine/`, {machine_id:machine_id, id_machine_type:id_machine_type}, {headers});
+  }
+
   private createHeaders(): HttpHeaders {
     return new HttpHeaders({
       'Content-Type': 'application/json',
